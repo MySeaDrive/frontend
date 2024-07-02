@@ -3,6 +3,8 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import Link from 'next/link';
+
 
 export default function Dashboard() {
   const [dives, setDives] = useState([]);
@@ -30,32 +32,28 @@ export default function Dashboard() {
     fetchUserAndDives();
   }, [supabase, router]);
 
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
-    router.push('/login/');
-  };
-
   if (!user) {
     return <div>Loading...</div>;
   }
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
-      <p>Welcome, {user.email}!</p>
-      <button
-        onClick={handleLogout}
-        className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-4"
-      >
-        Logout
-      </button>
-      <ul className="mt-4">
-        {dives.map((dive) => (
-          <li key={dive.id} className="mb-2">
-            Dive #{dive.id}: {dive.name}
-          </li>
-        ))}
-      </ul>
+      {dives.map((dive) => (
+        <div className="bg-white shadow rounded-lg p-4 mb-16" key={dive.id}>
+          <Link href={`/dashboard/dive/${dive.id}`} className="block">
+            <h2 className="text-2xl font-bold mb-2">{dive.name} </h2>
+            <p className="text-gray-500 mb-4">{dive.location} - {dive.date}</p>
+          </Link>
+          <div className="grid grid-cols-6 gap-4 mb-4">
+            {[1, 2, 3].map((media, index) => (
+              <div key={index} className="bg-gray-200 aspect-video flex items-center justify-center">
+                <img 
+                  src='/dive_placeholder.webp' />
+                  </div>
+            ))}
+          </div>
+        </div>
+      ))}
     </div>
   );
 }
