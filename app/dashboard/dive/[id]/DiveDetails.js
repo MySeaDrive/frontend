@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import Link from 'next/link';
+import FileUploadArea from '@/app/components/FileUploadArea';
 
 
 export default function DiveDetails({ id }) {
@@ -75,9 +76,9 @@ export default function DiveDetails({ id }) {
                     </div>
                 ))}
             </div>
-            <button className="w-full bg-purple-500 text-white py-2 rounded hover:bg-yellow-600">
-                Upload videos and photos
-            </button>
+            
+            <FileUploadArea/>    
+
             </div>
         </div>
         
