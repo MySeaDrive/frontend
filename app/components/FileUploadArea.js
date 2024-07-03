@@ -85,7 +85,7 @@ export default function FileUploadArea({diveId}) {
             // File uploaded successfully, now save the metadata
             await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/media/save?dive_id=${diveId}`, {
               filename: file.name,
-              raw_url: uploadUrl,
+              pre_signed_url: uploadUrl,
               mime_type: file.type
             },
             {

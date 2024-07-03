@@ -69,10 +69,11 @@ export default function DiveDetails({ id }) {
                 <p className="text-gray-500 mb-4">{dive.location} - {dive.date}</p>
             
             <div className="grid grid-cols-6 gap-4 mb-4">
-                {[1, 2, 3].map((media, index) => (
-                <div key={index} className="bg-gray-200 aspect-video flex items-center justify-center">
-                    <img 
-                    src='/dive_placeholder.webp' />
+                {dive.media_items.map((media, index) => (
+                    <div key={index} className="bg-gray-200 aspect-video flex items-center justify-center">
+                    
+                        <p>{media.filename}</p>
+
                     </div>
                 ))}
             </div>
