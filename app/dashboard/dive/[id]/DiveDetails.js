@@ -77,7 +77,7 @@ export default function DiveDetails({ id }) {
                 ))}
             </div>
             
-            <FileUploadArea/>    
+            <FileUploadArea diveId={dive.id}/>    
 
             </div>
         </div>
