@@ -2,7 +2,7 @@
 import { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import axios from 'axios';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { fetchWithAuth } from '../utils/api';
 
 function formatFileSize(bytes) {
   if (bytes === 0) return '0 Bytes';
@@ -16,7 +16,6 @@ export default function FileUploadArea({diveId}) {
   const [files, setFiles] = useState([]);
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState({});
-  const supabase = createClientComponentClient();
 
   const onDrop = useCallback((acceptedFiles) => {
     setFiles(prevFiles => [
@@ -55,17 +54,12 @@ export default function FileUploadArea({diveId}) {
         content_type: file.type,
         size: file.size
       }));
-      const { data: { session } } = await supabase.auth.getSession();
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/media/get_upload_urls`, 
-        { 
-            files: fileInfo
-        }, 
+
+      const uploadUrls = await fetchWithAuth(`/media/get_upload_urls`, 
         {
-            headers: {
-            'Authorization': `Bearer ${session.access_token}`
-        }
+          method: 'POST',
+          body: { files: fileInfo },
         });
-      const uploadUrls = response.data;
 
       // Step 2: Upload files to Backblaze B2
       const uploadPromises = files.map(file => {
@@ -83,15 +77,13 @@ export default function FileUploadArea({diveId}) {
         })
         .then(async () => {
             // File uploaded successfully, now save the metadata
-            await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/media/save?dive_id=${diveId}`, {
-              filename: file.name,
-              pre_signed_url: uploadUrl,
-              mime_type: file.type
-            },
-            {
-                headers: {
-                'Authorization': `Bearer ${session.access_token}`
-                }
+            await fetchWithAuth(`/media/save?dive_id=${diveId}`, {
+              method: 'POST',
+              body: {
+                filename: file.name,
+                pre_signed_url: uploadUrl,
+                mime_type: file.type
+              }
             });
         });
 

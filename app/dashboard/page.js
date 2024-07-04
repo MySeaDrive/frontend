@@ -1,39 +1,36 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import Link from 'next/link';
-
+import { useSession } from '../hooks/useSession';
+import { fetchWithAuth } from '../utils/api';
 
 export default function Dashboard() {
   const [dives, setDives] = useState([]);
-  const [user, setUser] = useState(null);
-  const router = useRouter();
-  const supabase = createClientComponentClient();
+  const { session, loading: sessionLoading } = useSession();
 
   useEffect(() => {
-    const fetchUserAndDives = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
+    const fetchDives = async () => {
       if (session) {
-        setUser(session.user);
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/dives/`, {
-          headers: {
-            'Authorization': `Bearer ${session.access_token}`
-          }
-        });
-        const data = await response.json();
-        setDives(data);
-      } else {
-        router.push('/login/');
+        try {
+          const data = await fetchWithAuth('/dives/');
+          setDives(data);
+        } catch (error) {
+          console.error('Error fetching dives:', error);
+          // Handle error (e.g., show error message to user)
+        }
       }
     };
 
-    fetchUserAndDives();
-  }, [supabase, router]);
+    fetchDives();
+  }, [session]);
 
-  if (!user) {
+  if (sessionLoading) {
     return <div>Loading...</div>;
+  }
+
+  if (!session) {
+    return <div>Please log in to view your dashboard.</div>;
   }
 
   return (

@@ -1,51 +1,23 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import Link from 'next/link';
 import FileUploadArea from '@/app/components/FileUploadArea';
-
+import { fetchWithAuth } from '@/app/utils/api';
+import { useSession } from '@/app/hooks/useSession';
 
 export default function DiveDetails({ id }) {
 
-  const [dive, setDive] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const router = useRouter();
-  const supabase = createClientComponentClient();
+  const [dive, setDive] = useState(null);
+  const { session, loading: sessionLoading } = useSession();
 
   useEffect(() => {
-    const fetchDive = async () => {
-      setLoading(true);
-      try {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (!session) {
-          router.push('/login');
-          return;
-        }
-
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/dives/${id}`, {
-          headers: {
-            'Authorization': `Bearer ${session.access_token}`
-          }
-        });
-
-        if (!response.ok) {
-          throw new Error('Failed to fetch dive');
-        }
-
-        const diveData = await response.json();
-        setDive(diveData);
-      } catch (error) {
-        console.error('Error fetching dive:', error);
-        // Handle error (e.g., show error message to user)
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchDive();
-  }, [id, router, supabase]);
+    if (session) {
+      fetchWithAuth(`/dives/${id}`)
+        .then(setDive)
+        .catch(console.error);
+    }
+  }, [id, session]);
   
   const renderMediaItem = (media) => {
     if (media.mime_type.startsWith('image/')) {
@@ -71,12 +43,8 @@ export default function DiveDetails({ id }) {
     }
   };
 
-  if (loading) {
+  if (sessionLoading || !dive) {
     return <div>Loading...</div>;
-  }
-
-  if (!dive) {
-    return <div>Dive not found</div>;
   }
 
   return (

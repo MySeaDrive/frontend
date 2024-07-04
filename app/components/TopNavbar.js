@@ -1,37 +1,27 @@
 "use client"
 
-import { useEffect, useState } from 'react';
 import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Input, Button, User, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@nextui-org/react";
 import Image from 'next/image';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { useRouter } from 'next/navigation';
+import { useSession } from '@/app/hooks/useSession';
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
 export default function TopNavbar() {
-
-  const [user, setUser] = useState(null);
   const router = useRouter();
   const supabase = createClientComponentClient();
-
-  useEffect(() => {
-    const checkSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session) {
-        setUser(session.user);
-      } else {
-        router.push('/login/');
-      }
-    };
-
-    checkSession();
-  }, [supabase, router]);
+  const { session, loading: sessionLoading } = useSession();
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
     router.push('/login/');
   };
 
-  if (!user) {
+  if (sessionLoading) {
     return <div>Loading...</div>;
+  }
+
+  if (!session) {
+    return null; // Or a simplified navbar for non-authenticated users
   }
 
   return (
@@ -68,9 +58,8 @@ export default function TopNavbar() {
           </Button>
         </NavbarItem>
         <NavbarItem>
-            
-            <Dropdown placement="bottom-end">
-              <DropdownTrigger>
+          <Dropdown placement="bottom-end">
+            <DropdownTrigger>
               <User
                 as="button"
                 avatarProps={{
@@ -78,15 +67,14 @@ export default function TopNavbar() {
                   src: "https://i.pravatar.cc/150?u=a042581f1e29026024d",
                 }}
                 className="transition-transform"
-                name={user.email}
+                name={session.user.email}
               />
-              </DropdownTrigger>
-              <DropdownMenu aria-label="Profile Actions" variant="flat">
-                <DropdownItem key="account">Account</DropdownItem>
-                <DropdownItem key="logout" color="danger" onClick={handleLogout}>Logout</DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
-          
+            </DropdownTrigger>
+            <DropdownMenu aria-label="Profile Actions" variant="flat">
+              <DropdownItem key="account">Account</DropdownItem>
+              <DropdownItem key="logout" color="danger" onClick={handleLogout}>Logout</DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
         </NavbarItem>
       </NavbarContent>
     </Navbar>
