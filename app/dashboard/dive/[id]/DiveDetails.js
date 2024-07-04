@@ -46,7 +46,30 @@ export default function DiveDetails({ id }) {
 
     fetchDive();
   }, [id, router, supabase]);
-
+  
+  const renderMediaItem = (media) => {
+    if (media.mime_type.startsWith('image/')) {
+      return (
+        <img 
+          src={media.processed_url || media.raw_url} 
+          alt={media.filename}
+          className="w-full h-full object-cover rounded"
+        />
+      );
+    } else if (media.mime_type.startsWith('video/')) {
+      return (
+        <video 
+          controls
+          className="w-full h-full object-cover rounded"
+        >
+          <source src={media.processed_url || media.raw_url} type={media.mime_type} />
+          Your browser does not support the video tag.
+        </video>
+      );
+    } else {
+      return <p>Unsupported media type</p>;
+    }
+  };
 
   if (loading) {
     return <div>Loading...</div>;
@@ -70,11 +93,9 @@ export default function DiveDetails({ id }) {
             
             <div className="grid grid-cols-6 gap-4 mb-4">
                 {dive.media_items.map((media, index) => (
-                    <div key={index} className="bg-gray-200 aspect-video flex items-center justify-center">
-                    
-                        <p>{media.filename}</p>
-
-                    </div>
+                    <div key={index} className="aspect-w-16 aspect-h-9">
+                        {renderMediaItem(media)}
+                  </div>
                 ))}
             </div>
             

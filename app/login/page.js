@@ -1,10 +1,10 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
-export default function Login() {
+function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(true);
@@ -70,7 +70,7 @@ export default function Login() {
             <input
               id="password"
               type="password"
-              placeholder="******************"
+              placeholder="**********"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
@@ -89,4 +89,12 @@ export default function Login() {
       </div>
     </div>
   );
+}
+
+export default function LoginWrapper() {
+  return (
+    <Suspense>
+      <Login />
+    </Suspense>
+  )
 }
