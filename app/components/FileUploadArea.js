@@ -94,6 +94,10 @@ export default function FileUploadArea({diveId}) {
       // Clear files after successful upload
       setFiles([]);
       setUploadProgress({});
+
+      // Reload the page
+      window.location.reload();
+
     } catch (error) {
       console.error('Upload failed:', error);
       // Handle error (e.g., show error message to user)
