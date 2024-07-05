@@ -5,11 +5,25 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useSession } from '@/app/hooks/useSession';
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { fetchWithAuth } from '@/app/utils/api';
 
 export default function TopNavbar() {
   const router = useRouter();
   const supabase = createClientComponentClient();
   const { session, loading: sessionLoading } = useSession();
+
+  const handleAddNewDive = async () => {
+    try {
+      const newDive = await fetchWithAuth('/dives/save', {
+        method: 'POST',
+        body: { name: 'Untitled Dive' }
+      });
+      router.push(`/dashboard/dive/${newDive.id}`);
+    } catch (error) {
+      console.error('Error creating new dive:', error);
+      // Handle error (e.g., show error message to user)
+    }
+  };
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -53,7 +67,7 @@ export default function TopNavbar() {
       
       <NavbarContent justify="end">
         <NavbarItem className='mx-5'>
-          <Button color="primary" variant="solid">
+          <Button color="primary" variant="solid" onClick={handleAddNewDive}>
             Add a new dive
           </Button>
         </NavbarItem>

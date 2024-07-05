@@ -10,6 +10,8 @@ export default function DiveDetails({ id }) {
 
   const [dive, setDive] = useState(null);
   const { session, loading: sessionLoading } = useSession();
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedName, setEditedName] = useState('');
 
   useEffect(() => {
     if (session) {
@@ -18,6 +20,29 @@ export default function DiveDetails({ id }) {
         .catch(console.error);
     }
   }, [id, session]);
+
+  const handleEditClick = () => {
+    setEditedName(dive.name);
+    setIsEditing(true);
+  };
+
+  const handleSaveName = async () => {
+    try {
+      const updatedDive = await fetchWithAuth(`/dives/${id}`, {
+        method: 'PATCH',
+        body: { name: editedName }
+      });
+      setDive(updatedDive);
+      setIsEditing(false);
+    } catch (error) {
+      console.error('Error updating dive name:', error);
+      // Handle error (e.g., show error message to user)
+    }
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+  };
   
   const renderMediaItem = (media) => {
     if (media.mime_type.startsWith('image/')) {
@@ -56,7 +81,36 @@ export default function DiveDetails({ id }) {
                 <Link href="/dashboard" className="text-blue-500 hover:underline mb-4 block">
                     ← Back
                 </Link>
-                <h2 className="text-2xl font-bold mb-2">{dive.name} </h2>
+
+                <div className="flex items-center mb-2">
+                  {isEditing ? (
+                    <>
+                      <input
+                        type="text"
+                        value={editedName}
+                        onChange={(e) => setEditedName(e.target.value)}
+                        className="text-2xl font-bold mr-2 p-1 border rounded"
+                      />
+                      <button onClick={handleSaveName} className="text-green-500 mr-2">
+                        Save
+                      </button>
+                      <button onClick={handleCancelEdit} className="text-red-500">
+                        Cancel 
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <h2 className="text-2xl font-bold mr-2">{dive.name}</h2>
+                      <button
+                        onClick={handleEditClick}
+                        className="text-gray-500 hover:text-blue-500 transition-colors duration-200"
+                      >
+                        Edit
+                      </button>
+                    </>
+                  )}
+                </div>
+
                 <p className="text-gray-500 mb-4">{dive.location} - {dive.date}</p>
             
             <div className="grid grid-cols-6 gap-4 mb-4">
