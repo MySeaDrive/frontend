@@ -3,11 +3,14 @@
 import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { Input, Card, Button } from "@nextui-org/react";
+import toast from 'react-hot-toast';
 
 function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(true);
+  const [errors, setErrors] = useState({ username: false, password: false });
   const router = useRouter();
   const searchParams = useSearchParams();
   const supabase = createClientComponentClient();
@@ -26,6 +29,17 @@ function Login() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    
+    // Reset errors
+    setErrors({ username: false, password: false });
+
+    // Check for empty fields
+    if (!username) setErrors(prev => ({ ...prev, username: true }));
+    if (!password) setErrors(prev => ({ ...prev, password: true }));
+
+    // If any field is empty, don't proceed
+    if (!username || !password) return;
+
     setLoading(true);
     const { error } = await supabase.auth.signInWithPassword({
       email: username,
@@ -33,8 +47,8 @@ function Login() {
     });
 
     if (error) {
-      console.error('Error logging in:', error.message);
       setLoading(false);
+      toast.error('Could not log you in');
     } else {
       const redirectTo = searchParams.get('redirectedFrom') || '/dashboard';
       router.push(redirectTo);
@@ -46,47 +60,62 @@ function Login() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <div className="w-full max-w-md">
-        <form onSubmit={handleLogin} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-          <h2 className="text-2xl font-bold mb-6 text-center">Login to MySeaDrive</h2>
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username">
-              Username
-            </label>
-            <input
-              id="username"
-              type="text"
-              placeholder="Email"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            />
-          </div>
-          <div className="mb-6">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
-              Password
-            </label>
-            <input
-              id="password"
-              type="password"
-              placeholder="**********"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
-            />
-          </div>
-          <div className="flex items-center justify-between">
-            <button
-              type="submit"
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-              disabled={loading}
-            >
-              {loading ? 'Logging in...' : 'Sign In'}
-            </button>
-          </div>
+    <div className="relative flex flex-col items-center justify-center min-h-screen overflow-hidden">
+      <video
+        autoPlay
+        loop
+        muted
+        className="absolute z-0 w-full h-full object-cover"
+      >
+        <source src="/bg_video.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+
+      <Card className="w-full max-w-md z-10 p-8 bg-white bg-opacity-10 backdrop-blur-md">
+        <form onSubmit={handleLogin} >
+          <h2 className="text-3xl font-semibold mt-8 mb-16 text-center text-white">Login to MySeaDrive</h2>
+          
+          <Input
+            clearable
+            bordered
+            fullWidth
+            size="lg"
+            label="Email"
+            contentLeft={<i className="fas fa-envelope" />}
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            className="mb-4"
+            name='email'
+            isInvalid={errors.username}
+            errorMessage={errors.username ? "Email is required" : ""}
+          />
+          <Input
+            type='password'
+            clearable
+            bordered
+            fullWidth
+            size="lg"
+            label="Password"
+            contentLeft={<i className="fas fa-lock" />}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="mb-6"
+            name='password'
+            isInvalid={errors.password}
+            errorMessage={errors.password ? "Password is required" : ""}
+          />
+          <Button
+            auto
+            shadow
+            type="submit"
+            color="primary"
+            isLoading={loading}
+            className="w-full font-bold uppercase py-6"
+          >
+            {loading ? 'Logging in...' : 'Dive In'}
+          </Button>
         </form>
-      </div>
+      </Card>
     </div>
   );
 }
