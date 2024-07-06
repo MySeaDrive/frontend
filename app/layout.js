@@ -1,7 +1,7 @@
 import { Red_Hat_Display } from 'next/font/google';
 import './globals.css';
 import { NextUIProvider } from '@nextui-org/react';
-import toast, { Toaster } from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
 
 const redHatDisplay = Red_Hat_Display({ subsets: ['latin'] });
 

@@ -61,16 +61,7 @@ function Login() {
 
   return (
     <div className="relative flex flex-col items-center justify-center min-h-screen overflow-hidden">
-      <video
-        autoPlay
-        loop
-        muted
-        className="absolute z-0 w-full h-full object-cover"
-      >
-        <source src="/bg_video.mp4" type="video/mp4" />
-        Your browser does not support the video tag.
-      </video>
-
+      
       <Card className="w-full max-w-md z-10 p-8 bg-white bg-opacity-10 backdrop-blur-md">
         <form onSubmit={handleLogin} >
           <h2 className="text-3xl font-semibold mt-8 mb-16 text-center text-white">Login to MySeaDrive</h2>
@@ -116,6 +107,7 @@ function Login() {
           </Button>
         </form>
       </Card>
+
     </div>
   );
 }
@@ -123,6 +115,16 @@ function Login() {
 export default function LoginWrapper() {
   return (
     <Suspense>
+      <video
+        autoPlay
+        loop
+        muted
+        className="absolute z-0 w-full h-full object-cover"
+      >
+        <source src="/bg_video.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+
       <Login />
     </Suspense>
   )
