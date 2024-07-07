@@ -46,7 +46,7 @@ export default function Dashboard() {
       {dives.map((dive) => (
         <Link href={`/dashboard/dive/${dive.id}`} key={dive.id}>
           <div 
-            className="relative bg-cover bg-center bg-no-repeat relative h-64 mb-8 rounded-lg overflow-hidden cursor-pointer"
+            className="shadow-lg relative bg-cover bg-center bg-no-repeat relative h-64 mb-8 rounded-lg overflow-hidden cursor-pointer"
             style={{
               backgroundImage: `url(${cardBackground(dive)})`,
             }}
@@ -58,7 +58,7 @@ export default function Dashboard() {
                 <p className="text-gray-300 mb-4 uppercase text-xs font-semibold"> Location - 01 Jan 2023</p>
               </div>
               <div className="flex space-x-2">
-                {dive.media_items.slice(0, 3).map((media, index) => (
+                {dive.media_items.slice(0, 5).map((media, index) => (
                   <div key={index} className="w-20 h-20 bg-gray-200 rounded-md overflow-hidden">
                     {media.thumbnails && media.thumbnails.length > 0 ? (
                       <img src={media.thumbnails[0]} alt={media.filename} className="w-full h-full object-cover" />
