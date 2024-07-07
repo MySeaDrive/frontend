@@ -191,7 +191,7 @@ export default function DiveDetails({ id }) {
             >
               <FaTimes />
             </button>
-            <div className="aspect-w-16 aspect-h-9">
+            <div className="aspect-w-16 aspect-h-9" style={{height: '800px'}}>
               {renderActiveMedia()}
             </div>
           </div>
