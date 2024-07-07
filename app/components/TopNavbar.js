@@ -39,7 +39,7 @@ export default function TopNavbar() {
   }
 
   return (
-    <Navbar isBordered maxWidth='full'>
+    <Navbar isBordered maxWidth='2xl' className="bg-white bg-opacity-30 backdrop-blur-sm">
       <NavbarBrand>
         <Image 
           src="/logo.png" 
@@ -67,7 +67,7 @@ export default function TopNavbar() {
       
       <NavbarContent justify="end">
         <NavbarItem className='mx-5'>
-          <Button color="primary" variant="solid" onClick={handleAddNewDive}>
+          <Button className="bg-blue-500 text-white shadow uppercase font-xs font-semibold" variant="solid" onClick={handleAddNewDive}>
             Add a new dive
           </Button>
         </NavbarItem>
