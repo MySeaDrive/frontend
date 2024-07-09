@@ -6,11 +6,14 @@ import { useRouter } from 'next/navigation';
 import { useSession } from '@/app/hooks/useSession';
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { fetchWithAuth } from '@/app/utils/api';
+import { useState } from 'react';
+import toast from "react-hot-toast";
 
 export default function TopNavbar() {
   const router = useRouter();
   const supabase = createClientComponentClient();
   const { session, loading: sessionLoading } = useSession();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleAddNewDive = async () => {
     try {
@@ -19,6 +22,7 @@ export default function TopNavbar() {
         body: { name: 'Untitled Dive' }
       });
       router.push(`/dashboard/dive/${newDive.id}`);
+      toast.success('New dive added!')
     } catch (error) {
       console.error('Error creating new dive:', error);
       // Handle error (e.g., show error message to user)
@@ -39,21 +43,40 @@ export default function TopNavbar() {
   }
 
   return (
-    <Navbar isBordered maxWidth='full'>
-      <NavbarBrand>
-        <Image 
-          src="/logo.png" 
-          alt="Logo" 
-          width={110} 
-          height={110}
-        />
-      </NavbarBrand>
+    <Navbar 
+      isBordered 
+      maxWidth='2xl' 
+      className="bg-white bg-opacity-70 backdrop-blur-sm"
+      isMenuOpen={isMenuOpen}
+      onMenuOpenChange={setIsMenuOpen}
+    >
+      <NavbarContent className="sm:hidden" justify="start">
+        <NavbarBrand>
+          <Image 
+            src="/logo.png" 
+            alt="Logo" 
+            width={50} 
+            height={50}
+          />
+        </NavbarBrand>
+      </NavbarContent>
+
+      <NavbarContent className="hidden sm:flex" justify="start">
+        <NavbarBrand>
+          <Image 
+            src="/logo.png" 
+            alt="Logo" 
+            width={110} 
+            height={110}
+          />
+        </NavbarBrand>
+      </NavbarContent>
       
-      <NavbarContent justify="center">
-        <NavbarItem>
+      <NavbarContent justify="center" className="flex-grow">
+        <NavbarItem className="w-full max-w-[600px]">
           <Input
             classNames={{
-              base: "max-w-full sm:max-w-[20rem] h-10 min-w-[30rem]",
+              base: "w-full h-10",
               mainWrapper: "h-full",
               input: "text-small",
               inputWrapper: "h-full font-normal text-default-500 bg-white dark:bg-default-500/20",
@@ -66,13 +89,13 @@ export default function TopNavbar() {
       </NavbarContent>
       
       <NavbarContent justify="end">
-        <NavbarItem className='mx-5'>
-          <Button color="primary" variant="solid" onClick={handleAddNewDive}>
+        <NavbarItem className="hidden sm:flex">
+          <Button className="bg-blue-500 text-white shadow uppercase font-xs font-semibold" variant="solid" onClick={handleAddNewDive}>
             Add a new dive
           </Button>
         </NavbarItem>
-        <NavbarItem>
-          <Dropdown placement="bottom-end">
+        <Dropdown placement="bottom-end">
+          <NavbarItem>
             <DropdownTrigger>
               <User
                 as="button"
@@ -81,15 +104,21 @@ export default function TopNavbar() {
                   src: "https://i.pravatar.cc/150?u=a042581f1e29026024d",
                 }}
                 className="transition-transform"
-                name={session.user.email}
               />
             </DropdownTrigger>
-            <DropdownMenu aria-label="Profile Actions" variant="flat">
-              <DropdownItem key="account">Account</DropdownItem>
-              <DropdownItem key="logout" color="danger" onClick={handleLogout}>Logout</DropdownItem>
-            </DropdownMenu>
-          </Dropdown>
-        </NavbarItem>
+          </NavbarItem>
+          <DropdownMenu aria-label="Profile Actions" variant="flat">
+            <DropdownItem key="email" className="h-14 gap-2" isReadOnly>
+              <p className="font-semibold">Signed in as</p>
+              <p className="font-semibold">{session.user.email}</p>
+            </DropdownItem>
+            <DropdownItem key="add_dive" className="sm:hidden" onClick={handleAddNewDive}>
+              Add a new dive
+            </DropdownItem>
+            <DropdownItem key="account">Account</DropdownItem>
+            <DropdownItem key="logout" color="danger" onClick={handleLogout}>Logout</DropdownItem>
+          </DropdownMenu>
+        </Dropdown>
       </NavbarContent>
     </Navbar>
   );

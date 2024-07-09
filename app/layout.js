@@ -1,8 +1,9 @@
-import { Manrope } from 'next/font/google';
+import { Red_Hat_Display } from 'next/font/google';
 import './globals.css';
 import { NextUIProvider } from '@nextui-org/react';
+import { Toaster } from 'react-hot-toast';
 
-const manrope = Manrope({ subsets: ['latin'] });
+const redHatDisplay = Red_Hat_Display({ subsets: ['latin'] });
 
 export const metadata = {
   title: 'MySeaDrive',
@@ -12,10 +13,19 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={manrope.className}>
+      <body className={redHatDisplay.className}>
         <NextUIProvider>
-          {children}
+            {children}
         </NextUIProvider>
+        <Toaster position="top-center" 
+          reverseOrder={false} 
+          toastOptions={
+            {
+              className:'',
+              style: {
+                background: 'rgba(255, 255, 255, 0.5)'
+              }
+            }} />
       </body>
     </html>
   );
