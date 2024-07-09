@@ -6,7 +6,8 @@ import FileUploadArea from '@/app/components/FileUploadArea';
 import { fetchWithAuth } from '@/app/utils/api';
 import { useSession } from '@/app/hooks/useSession';
 import { useRouter } from 'next/navigation';
-import { FaPlay, FaEdit, FaTrash, FaTimes, FaCheckCircle, FaTimesCircle, FaArrowCircleLeft, FaCheck } from 'react-icons/fa';
+import { FaPlay, FaEdit, FaTrash, FaTimes, FaCheckCircle, FaTimesCircle, FaArrowCircleLeft, FaExchangeAlt, FaEllipsisH } from 'react-icons/fa';
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from "@nextui-org/react";
 import toast from 'react-hot-toast';
 
 export default function DiveDetails({ id }) {
@@ -18,11 +19,15 @@ export default function DiveDetails({ id }) {
   const [activeMediaItem, setActiveMediaItem] = useState(null);
   const router = useRouter();
   const [activeMediaKey, setActiveMediaKey] = useState(0);
+  const [dives, setDives] = useState([]);
 
-  const handleMediaClick = (media) => {
-    setActiveMediaItem(media);
-    setActiveMediaKey(prevKey => prevKey + 1);
-  };
+  useEffect(() => {
+    if (session) {
+      fetchWithAuth('/dives/')
+        .then(setDives)
+        .catch(console.error);
+    }
+  }, [session]);
 
   useEffect(() => {
     if (session) {
@@ -31,6 +36,11 @@ export default function DiveDetails({ id }) {
         .catch(console.error);
     }
   }, [id, session]);
+
+  const handleMediaClick = (media) => {
+    setActiveMediaItem(media);
+    setActiveMediaKey(prevKey => prevKey + 1);
+  };
 
   const handleEditClick = () => {
     setEditedName(dive.name);
@@ -75,13 +85,44 @@ export default function DiveDetails({ id }) {
     setIsDeleting(false);
   };
 
+  const handleDeleteMediaItem = async (mediaItemId) => {
+    try {
+      await fetchWithAuth(`/media/${mediaItemId}`, {
+        method: 'DELETE',
+      });
+      setDive(prevDive => ({
+        ...prevDive,
+        media_items: prevDive.media_items.filter(item => item.id !== mediaItemId)
+      }));
+      toast.success('Item deleted');
+    } catch (error) {
+      console.error('Error deleting item:', error);
+      toast.error('Failed to delete item');
+    }
+  };
+
+  const handleMoveMediaItem = async (mediaItemId, newDiveId) => {
+    try {
+      const updatedMediaItem = await fetchWithAuth(`/media/${mediaItemId}/move?new_dive_id=${newDiveId}`, {
+        method: 'PATCH',
+      });
+      setDive(prevDive => ({
+        ...prevDive,
+        media_items: prevDive.media_items.filter(item => item.id !== mediaItemId)
+      }));
+      toast.success('Item moved');
+    } catch (error) {
+      console.error('Error moving item:', error);
+      toast.error('Failed to move item');
+    }
+  };
+
   const renderMediaItem = (media) => {
     const thumbnail = media.thumbnails && media.thumbnails.length > 0 ? media.thumbnails[0] : media.raw_url;
     return (
       <div 
         className="relative aspect-w-16 aspect-h-9 cursor-pointer group overflow-hidden rounded"
-        onClick={() => handleMediaClick(media)}
-      >
+        onClick={() => handleMediaClick(media)}>
         <img 
           src={thumbnail} 
           alt={media.filename}
@@ -92,6 +133,31 @@ export default function DiveDetails({ id }) {
             <FaPlay className="text-white text-4xl" />
           </div>
         )}
+        <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+          <Dropdown>
+            <DropdownTrigger>
+              <Button size="sm" color="default" variant="flat">
+                <FaEllipsisH className='text-white' />
+              </Button>
+            </DropdownTrigger>
+            <DropdownMenu aria-label="Media actions">
+              
+              <DropdownItem key="delete" color="danger" onClick={() => handleDeleteMediaItem(media.id)}>
+                <FaTrash className="mr-2 inline" /> Delete
+              </DropdownItem>
+              
+              <DropdownItem key="move" isReadOnly>
+                <FaExchangeAlt className="mr-2 inline" /> Move to
+              </DropdownItem>
+              {dives.filter(d => d.id !== dive.id).map(d => (
+                <DropdownItem key={d.id} onClick={() => handleMoveMediaItem(media.id, d.id)}>
+                  <span className='ml-6'>{d.name}</span>
+                </DropdownItem>
+              ))}
+              
+            </DropdownMenu>
+          </Dropdown>
+        </div>
       </div>
     );
   };
