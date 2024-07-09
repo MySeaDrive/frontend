@@ -38,7 +38,7 @@ export default function Dashboard() {
     if (dive.media_items.length > 0 && dive.media_items[0].thumbnails && dive.media_items[0].thumbnails.length > 0) {
       return dive.media_items[0].thumbnails[0];
     }
-    return '/bg_image.jpg';
+    return '/bg_image.png';
   };
 
   return (
@@ -59,7 +59,7 @@ export default function Dashboard() {
               </div>
               <div className="flex space-x-2">
                 {dive.media_items.slice(0, 5).map((media, index) => (
-                  <div key={index} className="w-20 h-20 bg-gray-200 rounded-md overflow-hidden">
+                  <div key={index} className="w-40 h-30 bg-gray-200 rounded-md overflow-hidden">
                     {media.thumbnails && media.thumbnails.length > 0 ? (
                       <img src={media.thumbnails[0]} alt={media.filename} className="w-full h-full object-cover" />
                     ) : (

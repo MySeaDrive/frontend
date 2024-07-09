@@ -46,7 +46,7 @@ export default function TopNavbar() {
     <Navbar 
       isBordered 
       maxWidth='2xl' 
-      className="bg-white bg-opacity-30 backdrop-blur-sm"
+      className="bg-white bg-opacity-70 backdrop-blur-sm"
       isMenuOpen={isMenuOpen}
       onMenuOpenChange={setIsMenuOpen}
     >
