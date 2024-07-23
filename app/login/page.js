@@ -62,7 +62,7 @@ function Login() {
   return (
     <div className="relative flex flex-col items-center justify-center min-h-screen overflow-hidden">
       
-      <Card className="w-full max-w-md z-10 p-8 bg-white bg-opacity-10 backdrop-blur-md">
+      <Card className="w-3/4 max-w-md z-10 p-8 bg-white bg-opacity-10 backdrop-blur-md">
         <form onSubmit={handleLogin} >
           <h2 className="text-3xl font-semibold mt-8 mb-16 text-center text-white">Login to MySeaDrive</h2>
           

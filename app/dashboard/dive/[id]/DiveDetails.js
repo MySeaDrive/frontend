@@ -181,7 +181,7 @@ export default function DiveDetails({ id }) {
           autoPlay
           key={activeMediaKey}
         >
-          <source src={activeMediaItem.raw_url} type={activeMediaItem.mime_type} />
+          <source src={activeMediaItem.processed_url} type={activeMediaItem.mime_type} />
           Your browser does not support the video tag.
         </video>
       );
