@@ -53,7 +53,7 @@ export default function TopNavbar() {
       <NavbarContent className="sm:hidden" justify="start">
         <NavbarBrand>
           <Image 
-            src="/logo.png" 
+            src="/next.svg" 
             alt="Logo" 
             width={50} 
             height={50}
@@ -64,7 +64,7 @@ export default function TopNavbar() {
       <NavbarContent className="hidden sm:flex" justify="start">
         <NavbarBrand>
           <Image 
-            src="/logo.png" 
+            src="/next.png" 
             alt="Logo" 
             width={110} 
             height={110}

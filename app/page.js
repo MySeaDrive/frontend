@@ -100,7 +100,7 @@ export default function LandingPageWrapper() {
           muted
           className="absolute w-full h-full object-cover"
         >
-          <source src="/bg_video_compressed.mp4" type="video/mp4" />
+          <source src="https://assets.myseadrive.com/static/bg_video_compressed.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
       </div>
