@@ -32,11 +32,9 @@ body {
   }
 }
 
-button > :not(*), a > :not(*) {
+.button-text {
   font-family: sans-serif;
   text-transform: uppercase;
-  font-size: 0.75rem;
-  font-weight: 500;
 }
 
 .bg-gradient {

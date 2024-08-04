@@ -63,12 +63,7 @@ export default function TopNavbar() {
 
       <NavbarContent className="hidden sm:flex" justify="start">
         <NavbarBrand>
-          <Image 
-            src="/next.png" 
-            alt="Logo" 
-            width={110} 
-            height={110}
-          />
+          <a href='/dashboard' className="font-semibold"> myseadrive </a>
         </NavbarBrand>
       </NavbarContent>
       
@@ -90,7 +85,7 @@ export default function TopNavbar() {
       
       <NavbarContent justify="end">
         <NavbarItem className="hidden sm:flex">
-          <Button className="bg-blue-500 text-white shadow uppercase font-xs font-semibold" variant="solid" onClick={handleAddNewDive}>
+          <Button className="bg-blue-500 text-white shadow text-xs button-text" variant="solid" onClick={handleAddNewDive}>
             Add a new dive
           </Button>
         </NavbarItem>

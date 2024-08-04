@@ -38,7 +38,7 @@ export default function Dashboard() {
     if (dive.media_items.length > 0 && dive.media_items[0].thumbnails && dive.media_items[0].thumbnails.length > 0) {
       return dive.media_items[0].thumbnails[0];
     }
-    return '/bg_image.png';
+    return '/bg_image.jpg';
   };
 
   return (
@@ -46,7 +46,7 @@ export default function Dashboard() {
       {dives.map((dive) => (
         <Link href={`/dashboard/dive/${dive.id}`} key={dive.id}>
           <div 
-            className="shadow-lg relative mb-8 rounded-md overflow-hidden cursor-pointer border"
+            className="shadow relative mb-8 rounded-md overflow-hidden cursor-pointer border"
             style={{
               backgroundImage: `
                 linear-gradient(to right, 
@@ -65,7 +65,7 @@ export default function Dashboard() {
             <div className="relative z-10 p-8 h-full flex flex-col">
               <div>
                 <h2 className="text-2xl font-bold text-black mb-2">{dive.name}</h2>
-                <p className="text-gray-500 mb-4 text-sm font-semibold"> Location - 01 Jan 2023</p>
+                <p className="text-gray-500 mb-4 text-sm"> Location - 01 Jan 2023</p>
               </div>
               <div className="flex space-x-2 mt-6">
                 {dive.media_items.slice(0, 5).map((media, index) => (

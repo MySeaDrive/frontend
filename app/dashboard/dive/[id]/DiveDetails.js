@@ -1,4 +1,4 @@
-'use client';
+'use client'
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
@@ -6,8 +6,8 @@ import FileUploadArea from '@/app/components/FileUploadArea';
 import { fetchWithAuth } from '@/app/utils/api';
 import { useSession } from '@/app/hooks/useSession';
 import { useRouter } from 'next/navigation';
-import { FaPlay, FaEdit, FaTrash, FaTimes, FaCheckCircle, FaTimesCircle, FaArrowCircleLeft, FaExchangeAlt, FaEllipsisH } from 'react-icons/fa';
-import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from "@nextui-org/react";
+import { FaPlay, FaEdit, FaTrash, FaTimes, FaCheckCircle, FaTimesCircle, FaArrowCircleLeft, FaExchangeAlt } from 'react-icons/fa';
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, Checkbox } from "@nextui-org/react";
 import toast from 'react-hot-toast';
 
 export default function DiveDetails({ id }) {
@@ -20,6 +20,7 @@ export default function DiveDetails({ id }) {
   const router = useRouter();
   const [activeMediaKey, setActiveMediaKey] = useState(0);
   const [dives, setDives] = useState([]);
+  const [selectedItems, setSelectedItems] = useState([]);
 
   useEffect(() => {
     if (session) {
@@ -85,78 +86,77 @@ export default function DiveDetails({ id }) {
     setIsDeleting(false);
   };
 
-  const handleDeleteMediaItem = async (mediaItemId) => {
+  const handleDeleteSelectedItems = async () => {
     try {
-      await fetchWithAuth(`/media/${mediaItemId}`, {
-        method: 'DELETE',
-      });
+      await Promise.all(selectedItems.map(itemId => 
+        fetchWithAuth(`/media/${itemId}`, { method: 'DELETE' })
+      ));
       setDive(prevDive => ({
         ...prevDive,
-        media_items: prevDive.media_items.filter(item => item.id !== mediaItemId)
+        media_items: prevDive.media_items.filter(item => !selectedItems.includes(item.id))
       }));
-      toast.success('Item deleted');
+      setSelectedItems([]);
+      toast.success('Selected items deleted');
     } catch (error) {
-      console.error('Error deleting item:', error);
-      toast.error('Failed to delete item');
+      console.error('Error deleting items:', error);
+      toast.error('Failed to delete selected items');
     }
   };
 
-  const handleMoveMediaItem = async (mediaItemId, newDiveId) => {
+  const handleMoveSelectedItems = async (newDiveId) => {
     try {
-      const updatedMediaItem = await fetchWithAuth(`/media/${mediaItemId}/move?new_dive_id=${newDiveId}`, {
-        method: 'PATCH',
-      });
+      await Promise.all(selectedItems.map(itemId => 
+        fetchWithAuth(`/media/${itemId}/move?new_dive_id=${newDiveId}`, { method: 'PATCH' })
+      ));
       setDive(prevDive => ({
         ...prevDive,
-        media_items: prevDive.media_items.filter(item => item.id !== mediaItemId)
+        media_items: prevDive.media_items.filter(item => !selectedItems.includes(item.id))
       }));
-      toast.success('Item moved');
+      setSelectedItems([]);
+      toast.success('Selected items moved');
     } catch (error) {
-      console.error('Error moving item:', error);
-      toast.error('Failed to move item');
+      console.error('Error moving items:', error);
+      toast.error('Failed to move selected items');
     }
+  };
+
+  const handleSelectItem = (itemId) => {
+    setSelectedItems(prev => 
+      prev.includes(itemId) ? prev.filter(id => id !== itemId) : [...prev, itemId]
+    );
   };
 
   const renderMediaItem = (media) => {
     const thumbnail = media.thumbnails && media.thumbnails.length > 0 ? media.thumbnails[0] : media.raw_url;
     return (
-      <div 
-        className="relative aspect-w-16 aspect-h-9 cursor-pointer group overflow-hidden rounded"
-        onClick={() => handleMediaClick(media)}>
-        <img 
-          src={thumbnail} 
-          alt={media.filename}
-          className="w-full h-full object-cover object-center"
-        />
-        {media.mime_type.startsWith('video/') && (
-          <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-            <FaPlay className="text-white text-4xl" />
-          </div>
-        )}
-        <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
-          <Dropdown>
-            <DropdownTrigger>
-              <Button size="sm" color="default" variant="flat">
-                <FaEllipsisH className='text-white' />
-              </Button>
-            </DropdownTrigger>
-            <DropdownMenu aria-label="Media actions">
-              
-              <DropdownItem key="delete" color="danger" onClick={() => handleDeleteMediaItem(media.id)}>
-                <FaTrash className="mr-2 inline" /> Delete
-              </DropdownItem>
-              
-              <DropdownItem key="move" isReadOnly>
-                <FaExchangeAlt className="mr-2 inline" /> Move to
-              </DropdownItem>
-              {dives.filter(d => d.id !== dive.id).map(d => (
-                <DropdownItem key={d.id} onClick={() => handleMoveMediaItem(media.id, d.id)}>
-                  <span className='ml-6'>{d.name}</span>
-                </DropdownItem>
-              ))}
-              
-            </DropdownMenu>
-          </Dropdown>
+      <div className="flex flex-col overflow-hidden rounded-lg shadow-md">
+        <div 
+          className="relative aspect-w-16 aspect-h-9 cursor-pointer overflow-hidden"
+          onClick={() => handleMediaClick(media)}
+        >
+          <img 
+            src={thumbnail} 
+            alt={media.filename}
+            className="w-full h-full object-cover object-center"
+          />
+        </div>
+        <div className="bg-gray-100 px-4 py-2 flex justify-between items-center">
+          <Checkbox
+            isSelected={selectedItems.includes(media.id)}
+            onChange={() => handleSelectItem(media.id)}
+            className="p-0"
+          />
+          {media.mime_type.startsWith('video/') && (
+            <button 
+              onClick={(e) => {
+                e.stopPropagation();
+                handleMediaClick(media);
+              }}
+              className="text-gray-600 hover:text-gray-800 transition-colors"
+            >
+              <FaPlay className="text-xl" />
+            </button>
+          )}
         </div>
       </div>
     );
@@ -194,27 +194,23 @@ export default function DiveDetails({ id }) {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="bg-white shadow rounded-lg p-8 border">
-        
-
+      <div className="bg-white shadow rounded-md p-8 border">
+          
         <div className="flex items-center mb-2 group">
-          <Link href="/dashboard" className="text-primary-200 text-3xl hover:underline block mr-2">
-            <FaArrowCircleLeft/>
-          </Link>
           {isEditing ? (
             <>
               <input
                 type="text"
                 value={editedName}
                 onChange={(e) => setEditedName(e.target.value)}
-                className="text-3xl font-bold mr-2 p-1 border rounded"
+                className="text-2xl font-bold mr-2 p-1 rounded border"
               />
               <FaCheckCircle onClick={handleSaveName} className="text-green-500 mr-2 text-xl cursor-pointer"/>
               <FaTimesCircle onClick={handleCancelEdit} className="text-red-500 text-xl cursor-pointer" />
             </>
           ) : (
             <>
-              <h2 className="text-3xl font-bold mr-2">{dive.name}</h2>
+              <h2 className="text-2xl font-bold mr-8">{dive.name}</h2>
               <div className="hidden group-hover:flex items-center">
                 <FaEdit onClick={handleEditClick} className="text-zinc-500 hover:text-zinc-700 transition-colors duration-200 mr-2 text-xl cursor-pointer"/>
                 <FaTrash onClick={handleDeleteClick} className="text-zinc-500 hover:text-zinc-700 transition-colors duration-200 text-xl cursor-pointer"/>
@@ -228,19 +224,19 @@ export default function DiveDetails({ id }) {
             <p className="mb-2">are you sure you want to delete this dive?</p>
             <button
               onClick={() => handleConfirmDelete(false)}
-              className="bg-red-500 text-white px-4 py-2 rounded mr-2"
+              className="bg-red-500 text-white px-4 py-2 rounded mr-2 button-text text-xs"
             >
               Delete Dive Only
             </button>
             <button
               onClick={() => handleConfirmDelete(true)}
-              className="bg-red-700 text-white px-4 py-2 rounded mr-2"
+              className="bg-red-700 text-white px-4 py-2 rounded mr-2 button-text text-xs"
             >
               Delete Dive and Media
             </button>
             <button
               onClick={handleCancelDelete}
-              className="bg-gray-300 text-gray-700 px-4 py-2 rounded"
+              className="bg-gray-300 text-gray-700 px-4 py-2 rounded button-text text-xs"
             >
               Cancel
             </button>
@@ -259,6 +255,35 @@ export default function DiveDetails({ id }) {
             </button>
             <div className="aspect-w-16 aspect-h-9" style={{height: '800px'}}>
               {renderActiveMedia()}
+            </div>
+          </div>
+        )}
+
+        {selectedItems.length > 0 && (
+          <div className="mb-4 p-4 bg-blue-100 rounded flex items-center justify-between">
+            <span>{selectedItems.length} item(s) selected</span>
+            <div>
+              <Button color="danger" size='sm' className='mr-2' variant='bordered' onClick={handleDeleteSelectedItems}>
+                    <FaTrash className="mr-2 inline" /> Delete Selected
+              </Button>
+
+              {  
+                dives.filter(d => d.id !== dive.id).length > 0 &&
+                <Dropdown>
+                  <DropdownTrigger>
+                    <Button size="sm" color="primary" variant='bordered'>
+                      <FaExchangeAlt className="mr-2 inline" /> Move
+                    </Button>
+                  </DropdownTrigger>
+                  <DropdownMenu aria-label="Selected items actions">
+                    {dives.filter(d => d.id !== dive.id).map(d => (
+                      <DropdownItem key={d.id} onClick={() => handleMoveSelectedItems(d.id)}>
+                        <span className='ml-6'>{d.name}</span>
+                      </DropdownItem>
+                    ))}
+                  </DropdownMenu>
+                </Dropdown>
+              }
             </div>
           </div>
         )}

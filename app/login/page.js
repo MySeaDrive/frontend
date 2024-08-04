@@ -101,7 +101,7 @@ function Login() {
             type="submit"
             color="primary"
             isLoading={loading}
-            className="w-full font-bold uppercase py-6"
+            className="w-full font-bold py-6 button-text"
           >
             {loading ? 'Logging in...' : 'Dive In'}
           </Button>

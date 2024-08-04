@@ -36,17 +36,17 @@ const LandingPage = () => {
           {/* Hero Section */}
           <header className="mb-16 w-2/3 md:py-32">
             <h1 className='text-xl md:text-3xl font-bold mb-12 mt-24'> myseadrive </h1>
-            <h2 className="text-4xl md:text-6xl mb-6 leading-tight font-bold">
+            <h2 className="text-4xl md:text-6xl mb-6 leading-tight font-semibold">
               the place to{' '}
               <span className={`text-yellow-200 inline-block w-48 ${slide}`}>
                 {word}
               </span>
               <br/>your diving media
             </h2>
-            <p className="md:text-xl mb-8 italic">
+            <p className="md:text-xl mb-8">
               for an entire diving lifetime!
             </p>
-            <Link href="/login" className="bg-blue-500 hover:bg-blue-600 text-white py-3 px-6 rounded-full text-md transition duration-300 uppercase">
+            <Link href="/login" className="bg-blue-500 hover:bg-blue-600 text-white py-4 px-8 rounded-lg text-md transition duration-300 button-text font-bold">
               Dive in
             </Link>
           </header>
