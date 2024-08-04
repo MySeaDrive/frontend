@@ -35,9 +35,9 @@ const LandingPage = () => {
         <div className="container mx-auto px-4 py-16">
           {/* Hero Section */}
           <header className="mb-16 w-2/3 md:py-32">
-            <h1 className='text-xl md:text-3xl font-bold mb-12 mt-24'> MySeaDrive </h1>
+            <h1 className='text-xl md:text-3xl font-bold mb-12 mt-24'> myseadrive </h1>
             <h2 className="text-4xl md:text-6xl mb-6 leading-tight font-bold">
-              The place to{' '}
+              the place to{' '}
               <span className={`text-yellow-200 inline-block w-48 ${slide}`}>
                 {word}
               </span>
@@ -46,7 +46,7 @@ const LandingPage = () => {
             <p className="md:text-xl mb-8 italic">
               for an entire diving lifetime!
             </p>
-            <Link href="/login" className="bg-blue-500 hover:bg-blue-600 text-white py-3 px-6 rounded-full text-xl transition duration-300 font-bold uppercase">
+            <Link href="/login" className="bg-blue-500 hover:bg-blue-600 text-white py-3 px-6 rounded-full text-md transition duration-300 uppercase">
               Dive in
             </Link>
           </header>
@@ -55,22 +55,22 @@ const LandingPage = () => {
           <div className="grid md:grid-cols-2 gap-12">
             <ValueProp
               icon="💿"
-              title="All your media, in one safe place"
-              description="Say goodbye to physical hard drives that fill up often, get scattered and are hard to find. Say hello to the online cloud for all your diving media. Every single original safely backed-up and accessible in an instant."
+              title="all your media, in one safe place"
+              description="say goodbye to physical hard drives that fill up often, get scattered and are hard to find. Say hello to the online cloud for all your diving media. Every single original safely backed-up and accessible in an instant."
             />
             <ValueProp
               icon="📸"
-              title="Dive albums are the new dive logs"
+              title="dive albums are the new dive logs"
               description="Effortlessly and automagically organize your videos and photos into dives. Tag dive sites, notes, logs and even species you've spotted. Mark your favourites to find them later easily. Truly your diving wall-of-fame!"
             />
             <ValueProp
               icon="✨"
-              title="Enhance easily and share with the world"
+              title="enhance easily and share with the world"
               description="Shrink files losslessly, correct colors, adjust exposure, cut and trim all in the browser. Make it awesome, then make it famous. Share with a link or publish to Youtube. Let the world witness the beauty of the ocean."
             />
             <ValueProp
               icon="🔓"
-              title="No lock-ins, no gimmicks… just good software"
+              title="no lock-ins, no gimmicks… just good software"
               description="Download all your media at any time if you decide to. Your data is after all your data. Also, the whole system is open-source. So you always know exactly what you are dealing with."
             />
           </div>
@@ -100,7 +100,7 @@ export default function LandingPageWrapper() {
           muted
           className="absolute w-full h-full object-cover"
         >
-          <source src="https://assets.myseadrive.com/static/bg_video_compressed.mp4" type="video/mp4" />
+          <source src="/bg_video_compressed.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
       </div>

@@ -32,6 +32,13 @@ body {
   }
 }
 
+button > :not(*), a > :not(*) {
+  font-family: sans-serif;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
 .bg-gradient {
   background: #E0EAFC;  /* fallback for old browsers */
   background: -webkit-linear-gradient(to bottom, #CFDEF3, #E0EAFC);  /* Chrome 10-25, Safari 5.1-6 */

@@ -118,7 +118,7 @@ export default function FileUploadArea({diveId}) {
       </div>
       {files.length > 0 && (
         <div className="mt-4">
-          <h4 className="text-lg font-semibold mb-2">Previews:</h4>
+          <h4 className="text-lg font-semibold mb-2">preview</h4>
           <div className="grid grid-cols-3 gap-4">
             {files.map(file => (
               <div key={file.id} className="relative bg-gray-100 p-2 rounded">

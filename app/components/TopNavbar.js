@@ -46,7 +46,7 @@ export default function TopNavbar() {
     <Navbar 
       isBordered 
       maxWidth='2xl' 
-      className="bg-white bg-opacity-70 backdrop-blur-sm"
+      className="bg-blue-200 bg-opacity-70 backdrop-blur-sm"
       isMenuOpen={isMenuOpen}
       onMenuOpenChange={setIsMenuOpen}
     >
@@ -81,7 +81,7 @@ export default function TopNavbar() {
               input: "text-small",
               inputWrapper: "h-full font-normal text-default-500 bg-white dark:bg-default-500/20",
             }}
-            placeholder="Find a dive by name or location"
+            placeholder="find a dive by name or location"
             size="sm"
             type="search"
           />
@@ -109,7 +109,7 @@ export default function TopNavbar() {
           </NavbarItem>
           <DropdownMenu aria-label="Profile Actions" variant="flat">
             <DropdownItem key="email" className="h-14 gap-2" isReadOnly>
-              <p className="font-semibold">Signed in as</p>
+              <p className="font-semibold">signed in as</p>
               <p className="font-semibold">{session.user.email}</p>
             </DropdownItem>
             <DropdownItem key="add_dive" className="sm:hidden" onClick={handleAddNewDive}>

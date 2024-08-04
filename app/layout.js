@@ -1,9 +1,10 @@
-import { Red_Hat_Display } from 'next/font/google';
+import { IBM_Plex_Serif, Red_Hat_Display } from 'next/font/google';
 import './globals.css';
 import { NextUIProvider } from '@nextui-org/react';
 import { Toaster } from 'react-hot-toast';
 
-const redHatDisplay = Red_Hat_Display({ subsets: ['latin'] });
+// const redHatDisplay = Red_Hat_Display({ subsets: ['latin'] });
+const ibm_plex_serif = IBM_Plex_Serif({ subsets: ['latin'], weight: ['200', '400', '500'] });
 
 export const metadata = {
   title: 'MySeaDrive',
@@ -13,7 +14,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={redHatDisplay.className}>
+      <body className={ibm_plex_serif.className}>
         <NextUIProvider>
             {children}
         </NextUIProvider>

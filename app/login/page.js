@@ -64,14 +64,14 @@ function Login() {
       
       <Card className="w-3/4 max-w-md z-10 p-8 bg-white bg-opacity-10 backdrop-blur-md">
         <form onSubmit={handleLogin} >
-          <h2 className="text-3xl font-semibold mt-8 mb-16 text-center text-white">Login to MySeaDrive</h2>
+          <h2 className="text-3xl font-semibold mt-8 mb-16 text-center text-white">login to myseadrive</h2>
           
           <Input
             clearable
             bordered
             fullWidth
             size="lg"
-            label="Email"
+            label="email"
             contentLeft={<i className="fas fa-envelope" />}
             value={username}
             onChange={(e) => setUsername(e.target.value)}
@@ -86,7 +86,7 @@ function Login() {
             bordered
             fullWidth
             size="lg"
-            label="Password"
+            label="password"
             contentLeft={<i className="fas fa-lock" />}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -121,7 +121,7 @@ export default function LoginWrapper() {
         muted
         className="absolute z-0 w-full h-full object-cover"
       >
-        <source src="https://assets.myseadrive.com/static/bg_video_compressed.mp4" type="video/mp4" />
+        <source src="/bg_video_compressed.mp4" type="video/mp4" />
         Your browser does not support the video tag.
       </video>
 

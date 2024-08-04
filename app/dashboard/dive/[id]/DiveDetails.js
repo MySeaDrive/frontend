@@ -194,7 +194,7 @@ export default function DiveDetails({ id }) {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="bg-white shadow rounded-lg p-8">
+      <div className="bg-white shadow rounded-lg p-8 border">
         
 
         <div className="flex items-center mb-2 group">
@@ -225,7 +225,7 @@ export default function DiveDetails({ id }) {
 
         {isDeleting && (
           <div className="mt-4 p-4 bg-red-100 rounded">
-            <p className="mb-2">Are you sure you want to delete this dive?</p>
+            <p className="mb-2">are you sure you want to delete this dive?</p>
             <button
               onClick={() => handleConfirmDelete(false)}
               className="bg-red-500 text-white px-4 py-2 rounded mr-2"
