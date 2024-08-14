@@ -5,11 +5,12 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { Input, Card, Button } from "@nextui-org/react";
 import toast from 'react-hot-toast';
+import useLoadingStore from '../store/loadingStore';
 
 function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(true);
+  const {isLoading, setIsLoading} = useLoadingStore();
   const [errors, setErrors] = useState({ username: false, password: false });
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -21,7 +22,7 @@ function Login() {
       if (session) {
         router.push('/dashboard');
       } else {
-        setLoading(false);
+        setIsLoading(false);
       }
     };
     checkSession();
@@ -40,24 +41,20 @@ function Login() {
     // If any field is empty, don't proceed
     if (!username || !password) return;
 
-    setLoading(true);
+    setIsLoading(true);
     const { error } = await supabase.auth.signInWithPassword({
       email: username,
       password: password,
     });
 
     if (error) {
-      setLoading(false);
+      setIsLoading(false);
       toast.error('Could not log you in');
     } else {
       const redirectTo = searchParams.get('redirectedFrom') || '/dashboard';
       router.push(redirectTo);
     }
   };
-
-  if (loading) {
-    return <div className="flex justify-center items-center h-screen">Loading...</div>;
-  }
 
   return (
     <div className="relative flex flex-col items-center justify-center min-h-screen overflow-hidden">
@@ -100,10 +97,11 @@ function Login() {
             shadow
             type="submit"
             color="primary"
-            isLoading={loading}
+            isLoading={isLoading}
             className="w-full font-bold py-6 button-text"
+            disabled={isLoading}
           >
-            {loading ? 'Logging in...' : 'Dive In'}
+            {isLoading ? 'Diving in...' : 'Dive In'}
           </Button>
         </form>
       </Card>
