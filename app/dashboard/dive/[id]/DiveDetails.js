@@ -6,9 +6,10 @@ import FileUploadArea from '@/app/components/FileUploadArea';
 import { fetchWithAuth } from '@/app/utils/api';
 import { useSession } from '@/app/hooks/useSession';
 import { useRouter } from 'next/navigation';
-import { FaPlay, FaEdit, FaTrash, FaTimes, FaCheckCircle, FaTimesCircle, FaArrowCircleLeft, FaExchangeAlt } from 'react-icons/fa';
+import { FaPlay, FaEdit, FaTrash, FaTimes, FaCheckCircle, FaTimesCircle, FaExchangeAlt } from 'react-icons/fa';
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, Checkbox } from "@nextui-org/react";
 import toast from 'react-hot-toast';
+import ProcessingSection from './ProcessingSection';
 
 export default function DiveDetails({ id }) {
   const [dive, setDive] = useState(null);
@@ -21,6 +22,7 @@ export default function DiveDetails({ id }) {
   const [activeMediaKey, setActiveMediaKey] = useState(0);
   const [dives, setDives] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
+  const [intervalJob, setIntervalJob] = useState(null);
 
   useEffect(() => {
     if (session) {
@@ -30,13 +32,29 @@ export default function DiveDetails({ id }) {
     }
   }, [session]);
 
-  useEffect(() => {
+  const fetchDiveDetails = async () => {
     if (session) {
-      fetchWithAuth(`/dives/${id}`)
-        .then(setDive)
-        .catch(console.error);
+      try {
+        const data = await fetchWithAuth(`/dives/${id}`);
+        setDive(data);
+
+        // Fetch again after N secs if items are in processing
+        if(data.media_items.filter(media => media.state === 'processing').length > 0) {
+          setTimeout(fetchDiveDetails, 10000);
+        }
+
+
+      } catch (error) {
+        console.error('Error fetching dive details:', error);
+      }
     }
+
+  };
+
+  useEffect(() => {
+    fetchDiveDetails();
   }, [id, session]);
+
 
   const handleMediaClick = (media) => {
     setActiveMediaItem(media);
@@ -124,6 +142,13 @@ export default function DiveDetails({ id }) {
     setSelectedItems(prev => 
       prev.includes(itemId) ? prev.filter(id => id !== itemId) : [...prev, itemId]
     );
+  };
+
+  const handleProcessingUpdate = (updatedMediaItems) => {
+    setDive(prevDive => ({
+      ...prevDive,
+      media_items: updatedMediaItems
+    }));
   };
 
   const renderMediaItem = (media) => {
@@ -289,12 +314,14 @@ export default function DiveDetails({ id }) {
         )}
 
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-4">
-          {dive.media_items.map((media, index) => (
+          {dive.media_items.filter(media => media.state === 'ready').map((media, index) => (
             <div key={index}>
               {renderMediaItem(media)}
             </div>
           ))}
         </div>
+
+        <ProcessingSection processingItems={dive.media_items.filter(media => media.state === 'processing')} />
 
         <FileUploadArea diveId={dive.id}/>    
       </div>
