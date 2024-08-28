@@ -25,6 +25,10 @@ export async function fetchWithAuth(url, options = {}) {
       body: options.body ? JSON.stringify(options.body) : undefined,
     });
 
+    if(response.status == 404) {
+      throw new Error('404');
+    }
+
     if (!response.ok) {
       throw new Error('API request failed');
     }

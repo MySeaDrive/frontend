@@ -10,6 +10,7 @@ import { FaPlay, FaEdit, FaTrash, FaTimes, FaCheckCircle, FaTimesCircle, FaExcha
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, Checkbox } from "@nextui-org/react";
 import toast from 'react-hot-toast';
 import ProcessingSection from './ProcessingSection';
+import Log from './Log';
 
 export default function DiveDetails({ id }) {
   const [dive, setDive] = useState(null);
@@ -220,110 +221,121 @@ export default function DiveDetails({ id }) {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="bg-white shadow rounded-md p-8 border">
+
+        <div className="flex">
+          <div className="w-3/4 pr-4">
           
-        <div className="flex items-center mb-2 group">
-          {isEditing ? (
-            <>
-              <input
-                type="text"
-                value={editedName}
-                onChange={(e) => setEditedName(e.target.value)}
-                className="text-2xl font-bold mr-2 p-1 rounded border"
-              />
-              <FaCheckCircle onClick={handleSaveName} className="text-green-500 mr-2 text-xl cursor-pointer"/>
-              <FaTimesCircle onClick={handleCancelEdit} className="text-red-500 text-xl cursor-pointer" />
-            </>
-          ) : (
-            <>
-              <h2 className="text-2xl font-bold mr-8">{dive.name}</h2>
-              <div className="hidden group-hover:flex items-center">
-                <FaEdit onClick={handleEditClick} className="text-zinc-500 hover:text-zinc-700 transition-colors duration-200 mr-2 text-xl cursor-pointer"/>
-                <FaTrash onClick={handleDeleteClick} className="text-zinc-500 hover:text-zinc-700 transition-colors duration-200 text-xl cursor-pointer"/>
+            <div className="flex items-center mb-2 group">
+              {isEditing ? (
+                <>
+                  <input
+                    type="text"
+                    value={editedName}
+                    onChange={(e) => setEditedName(e.target.value)}
+                    className="text-2xl font-bold mr-2 p-1 rounded border"
+                  />
+                  <FaCheckCircle onClick={handleSaveName} className="text-green-500 mr-2 text-xl cursor-pointer"/>
+                  <FaTimesCircle onClick={handleCancelEdit} className="text-red-500 text-xl cursor-pointer" />
+                </>
+              ) : (
+                <>
+                  <h2 className="text-2xl font-bold mr-8">{dive.name}</h2>
+                  <div className="hidden group-hover:flex items-center">
+                    <FaEdit onClick={handleEditClick} className="text-zinc-500 hover:text-zinc-700 transition-colors duration-200 mr-2 text-xl cursor-pointer"/>
+                    <FaTrash onClick={handleDeleteClick} className="text-zinc-500 hover:text-zinc-700 transition-colors duration-200 text-xl cursor-pointer"/>
+                  </div>
+                </>
+              )}
+            </div>
+
+            {isDeleting && (
+              <div className="mt-4 p-4 bg-red-100 rounded">
+                <p className="mb-2">are you sure you want to delete this dive?</p>
+                <button
+                  onClick={() => handleConfirmDelete(false)}
+                  className="bg-red-500 text-white px-4 py-2 rounded mr-2 button-text text-xs"
+                >
+                  Delete Dive Only
+                </button>
+                <button
+                  onClick={() => handleConfirmDelete(true)}
+                  className="bg-red-700 text-white px-4 py-2 rounded mr-2 button-text text-xs"
+                >
+                  Delete Dive and Media
+                </button>
+                <button
+                  onClick={handleCancelDelete}
+                  className="bg-gray-300 text-gray-700 px-4 py-2 rounded button-text text-xs"
+                >
+                  Cancel
+                </button>
               </div>
-            </>
-          )}
+            )}
+
+            <p className="text-gray-500 mb-4">{dive.location} - {dive.date}</p>
+
+          
+            {activeMediaItem && (
+              <div className="mb-4 relative max-h-800" key={activeMediaKey}>
+                <button 
+                  onClick={() => setActiveMediaItem(null)}
+                  className="absolute top-2 right-2 text-white bg-black bg-opacity-50 rounded-full p-2 z-10"
+                >
+                  <FaTimes />
+                </button>
+                <div className="aspect-w-16 aspect-h-9" style={{height: '800px'}}>
+                  {renderActiveMedia()}
+                </div>
+              </div>
+            )}
+
+            {selectedItems.length > 0 && (
+              <div className="mb-4 p-4 bg-blue-100 rounded flex items-center justify-between">
+                <span>{selectedItems.length} item(s) selected</span>
+                <div>
+                  <Button color="danger" size='sm' className='mr-2' variant='bordered' onClick={handleDeleteSelectedItems}>
+                        <FaTrash className="mr-2 inline" /> Delete Selected
+                  </Button>
+
+                  {  
+                    dives.filter(d => d.id !== dive.id).length > 0 &&
+                    <Dropdown>
+                      <DropdownTrigger>
+                        <Button size="sm" color="primary" variant='bordered'>
+                          <FaExchangeAlt className="mr-2 inline" /> Move
+                        </Button>
+                      </DropdownTrigger>
+                      <DropdownMenu aria-label="Selected items actions">
+                        {dives.filter(d => d.id !== dive.id).map(d => (
+                          <DropdownItem key={d.id} onClick={() => handleMoveSelectedItems(d.id)}>
+                            <span className='ml-6'>{d.name}</span>
+                          </DropdownItem>
+                        ))}
+                      </DropdownMenu>
+                    </Dropdown>
+                  }
+                </div>
+              </div>
+            )}
+
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-4">
+              {dive.media_items.filter(media => media.state === 'ready').map((media, index) => (
+                <div key={index}>
+                  {renderMediaItem(media)}
+                </div>
+              ))}
+            </div>
+
+            <ProcessingSection processingItems={dive.media_items.filter(media => media.state === 'processing')} />
+
+            <FileUploadArea diveId={dive.id}/>    
+          </div>
+
+          <div className="w-1/4 pl-4">
+            <Log diveId={id} diveDate={dive.date} />
+          </div>
+
         </div>
-
-        {isDeleting && (
-          <div className="mt-4 p-4 bg-red-100 rounded">
-            <p className="mb-2">are you sure you want to delete this dive?</p>
-            <button
-              onClick={() => handleConfirmDelete(false)}
-              className="bg-red-500 text-white px-4 py-2 rounded mr-2 button-text text-xs"
-            >
-              Delete Dive Only
-            </button>
-            <button
-              onClick={() => handleConfirmDelete(true)}
-              className="bg-red-700 text-white px-4 py-2 rounded mr-2 button-text text-xs"
-            >
-              Delete Dive and Media
-            </button>
-            <button
-              onClick={handleCancelDelete}
-              className="bg-gray-300 text-gray-700 px-4 py-2 rounded button-text text-xs"
-            >
-              Cancel
-            </button>
-          </div>
-        )}
-
-        <p className="text-gray-500 mb-4">{dive.location} - {dive.date}</p>
-
-        {activeMediaItem && (
-          <div className="mb-4 relative max-h-800" key={activeMediaKey}>
-            <button 
-              onClick={() => setActiveMediaItem(null)}
-              className="absolute top-2 right-2 text-white bg-black bg-opacity-50 rounded-full p-2 z-10"
-            >
-              <FaTimes />
-            </button>
-            <div className="aspect-w-16 aspect-h-9" style={{height: '800px'}}>
-              {renderActiveMedia()}
-            </div>
-          </div>
-        )}
-
-        {selectedItems.length > 0 && (
-          <div className="mb-4 p-4 bg-blue-100 rounded flex items-center justify-between">
-            <span>{selectedItems.length} item(s) selected</span>
-            <div>
-              <Button color="danger" size='sm' className='mr-2' variant='bordered' onClick={handleDeleteSelectedItems}>
-                    <FaTrash className="mr-2 inline" /> Delete Selected
-              </Button>
-
-              {  
-                dives.filter(d => d.id !== dive.id).length > 0 &&
-                <Dropdown>
-                  <DropdownTrigger>
-                    <Button size="sm" color="primary" variant='bordered'>
-                      <FaExchangeAlt className="mr-2 inline" /> Move
-                    </Button>
-                  </DropdownTrigger>
-                  <DropdownMenu aria-label="Selected items actions">
-                    {dives.filter(d => d.id !== dive.id).map(d => (
-                      <DropdownItem key={d.id} onClick={() => handleMoveSelectedItems(d.id)}>
-                        <span className='ml-6'>{d.name}</span>
-                      </DropdownItem>
-                    ))}
-                  </DropdownMenu>
-                </Dropdown>
-              }
-            </div>
-          </div>
-        )}
-
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-4">
-          {dive.media_items.filter(media => media.state === 'ready').map((media, index) => (
-            <div key={index}>
-              {renderMediaItem(media)}
-            </div>
-          ))}
-        </div>
-
-        <ProcessingSection processingItems={dive.media_items.filter(media => media.state === 'processing')} />
-
-        <FileUploadArea diveId={dive.id}/>    
       </div>
     </div>
   );
