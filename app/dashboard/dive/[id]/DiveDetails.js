@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import Link from 'next/link';
 import FileUploadArea from '@/app/components/FileUploadArea';
 import { fetchWithAuth } from '@/app/utils/api';
@@ -11,6 +11,7 @@ import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, Checkbox
 import toast from 'react-hot-toast';
 import ProcessingSection from './ProcessingSection';
 import Log from './Log';
+import VideoPlayer from '@/app/components/VideoPlayer';
 
 export default function DiveDetails({ id }) {
   const [dive, setDive] = useState(null);
@@ -201,15 +202,12 @@ export default function DiveDetails({ id }) {
       );
     } else if (activeMediaItem.mime_type.startsWith('video/')) {
       return (
-        <video 
-          controls
-          className="w-full h-full"
-          autoPlay
-          key={activeMediaKey}
-        >
-          <source src={activeMediaItem.processed_url} type={activeMediaItem.mime_type} />
-          Your browser does not support the video tag.
-        </video>
+        <Suspense fallback={<div>Loading video player...</div>}>
+          <VideoPlayer 
+            src={activeMediaItem.processed_url} 
+            type={activeMediaItem.mime_type}
+          />
+        </Suspense>
       );
     }
   };
@@ -283,7 +281,7 @@ export default function DiveDetails({ id }) {
                 >
                   <FaTimes />
                 </button>
-                <div className="aspect-w-16 aspect-h-9" style={{height: '800px'}}>
+                <div className="aspect-w-16 aspect-h-9" style={{maxHeight: '800px'}}>
                   {renderActiveMedia()}
                 </div>
               </div>
