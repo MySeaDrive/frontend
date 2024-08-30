@@ -6,7 +6,7 @@ import FileUploadArea from '@/app/components/FileUploadArea';
 import { fetchWithAuth } from '@/app/utils/api';
 import { useSession } from '@/app/hooks/useSession';
 import { useRouter } from 'next/navigation';
-import { FaPlay, FaEdit, FaTrash, FaTimes, FaCheckCircle, FaTimesCircle, FaExchangeAlt } from 'react-icons/fa';
+import { FaPlay, FaEdit, FaTrash, FaTimes, FaCheckCircle, FaTimesCircle, FaExchangeAlt, FaStar } from 'react-icons/fa';
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, Checkbox } from "@nextui-org/react";
 import toast from 'react-hot-toast';
 import ProcessingSection from './ProcessingSection';
@@ -153,6 +153,26 @@ export default function DiveDetails({ id }) {
     }));
   };
 
+  const handleToggleFavorite = async (mediaItemId) => {
+    try {
+      const response = await fetchWithAuth(`/media/${mediaItemId}/toggle_favorite`, {
+        method: 'POST'
+      });
+      
+      if (response.is_favorite !== undefined) {
+        setDive(prevDive => ({
+          ...prevDive,
+          media_items: prevDive.media_items.map(item => 
+            item.id === mediaItemId ? {...item, is_favorite: response.is_favorite} : item
+          )
+        }));
+      }
+    } catch (error) {
+      console.error('Error toggling favorite:', error);
+      toast.error('Failed to update favorite status');
+    }
+  };
+
   const renderMediaItem = (media) => {
     const thumbnail = media.thumbnails && media.thumbnails.length > 0 ? media.thumbnails[0] : media.raw_url;
     return (
@@ -173,6 +193,15 @@ export default function DiveDetails({ id }) {
             onChange={() => handleSelectItem(media.id)}
             className="p-0"
           />
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              handleToggleFavorite(media.id);
+            }}
+            className="text-yellow-500 hover:text-yellow-600 transition-colors"
+          >
+            <FaStar className={`text-2xl ${media.is_favorite ? 'text-yellow-500' : 'text-gray-300'}`} />
+          </button>
           {media.mime_type.startsWith('video/') && (
             <button 
               onClick={(e) => {
