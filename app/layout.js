@@ -7,7 +7,7 @@ import SpinnerLoader from './components/Loaders';
 const ibm_plex_serif = IBM_Plex_Serif({ subsets: ['latin'], weight: ['200', '300', '400', '500', '600'] });
 
 export const metadata = {
-  title: 'MySeaDrive',
+  title: 'my sea drive',
   description: 'Home of your diving media, for your entire diving lifetime!',
 };
 

@@ -50,24 +50,11 @@ export default function TopNavbar() {
       isMenuOpen={isMenuOpen}
       onMenuOpenChange={setIsMenuOpen}
     >
-      <NavbarContent className="sm:hidden" justify="start">
-        <NavbarBrand>
-          <Image 
-            src="/next.svg" 
-            alt="Logo" 
-            width={50} 
-            height={50}
-          />
-        </NavbarBrand>
-      </NavbarContent>
 
       <NavbarContent className="hidden sm:flex" justify="start">
-        <NavbarBrand>
-          <a href='/dashboard' className="font-semibold"> myseadrive </a>
-        </NavbarBrand>
-      </NavbarContent>
-      
-      <NavbarContent justify="center" className="flex-grow">
+        <a href="/dashboard">
+          <Image src="/logo.webp" width="40" height="100"/>
+        </a>
         <NavbarItem className="w-full max-w-[600px]">
           <Input
             classNames={{
@@ -82,6 +69,7 @@ export default function TopNavbar() {
           />
         </NavbarItem>
       </NavbarContent>
+      
       
       <NavbarContent justify="end">
         <NavbarItem className="hidden sm:flex">

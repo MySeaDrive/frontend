@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const useSlideEffect = (words, duration = 2000) => {
   const [index, setIndex] = useState(0);
@@ -35,8 +36,8 @@ const LandingPage = () => {
         <div className="container mx-auto px-4 py-16">
           {/* Hero Section */}
           <header className="mb-16 w-2/3 md:py-32">
-            <h1 className='text-xl md:text-3xl font-bold mb-12 mt-24'> myseadrive </h1>
-            <h2 className="text-4xl md:text-6xl mb-6 leading-tight font-semibold">
+            <Image src="/logo_for_dark.webp" width="300" height="200"/>
+            <h2 className="text-4xl md:text-6xl mt-8 mb-6 leading-tight font-semibold">
               the place to{' '}
               <span className={`text-yellow-200 inline-block w-48 ${slide}`}>
                 {word}
@@ -99,6 +100,8 @@ export default function LandingPageWrapper() {
           loop
           muted
           className="absolute w-full h-full object-cover"
+          poster='/poster.webp'
+
         >
           <source src="/bg_video_compressed.mp4" type="video/mp4" />
           Your browser does not support the video tag.

@@ -6,6 +6,7 @@ import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { Input, Card, Button } from "@nextui-org/react";
 import toast from 'react-hot-toast';
 import useLoadingStore from '../store/loadingStore';
+import Image from 'next/image';
 
 function Login() {
   const [username, setUsername] = useState('');
@@ -61,8 +62,13 @@ function Login() {
       
       <Card className="w-3/4 max-w-md z-10 p-8 bg-white bg-opacity-10 backdrop-blur-md">
         <form onSubmit={handleLogin} >
-          <h2 className="text-3xl font-semibold mt-8 mb-16 text-center text-white">login to myseadrive</h2>
-          
+          <div className='flex flex-col mt-8 mb-16 items-center justify-center'>
+            <h2 className="text-3xl font-semibold text-center text-white">
+            welcome to 
+            </h2>
+            <Image src="/logo_for_dark.webp" width="300" height="100"/>
+          </div>
+
           <Input
             clearable
             bordered
