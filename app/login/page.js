@@ -7,6 +7,7 @@ import { Input, Card, Button } from "@nextui-org/react";
 import toast from 'react-hot-toast';
 import useLoadingStore from '../store/loadingStore';
 import Image from 'next/image';
+import { FaGoogle, FaTwitter } from 'react-icons/fa';
 
 function Login() {
   const [username, setUsername] = useState('');
@@ -57,6 +58,21 @@ function Login() {
     }
   };
 
+  const handleSocialLogin = async (provider) => {
+    setIsLoading(true);
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: provider,
+      options: {
+        redirectTo: `${window.location.origin}/auth/callback`,
+      },
+    });
+
+    if (error) {
+      setIsLoading(false);
+      toast.error(`Could not log you in with ${provider}`);
+    }
+  };
+
   return (
     <div className="relative flex flex-col items-center justify-center min-h-screen overflow-hidden">
       
@@ -64,16 +80,44 @@ function Login() {
         <form onSubmit={handleLogin} >
           <div className='flex flex-col mt-8 mb-16 items-center justify-center'>
             <h2 className="text-3xl font-semibold text-center text-white">
-            welcome to 
+            login to 
             </h2>
             <Image src="/logo_for_dark.webp" width="300" height="100"/>
+          </div>
+
+
+          <div className="flex items-center justify-center space-x-4 mb-6">
+            
+            <Button
+              auto
+              shadow
+              isIconOnly
+              onClick={() => handleSocialLogin('google')}
+              className="rounded-full button-text bg-white h-16 w-16 text-xl bg-opacity-20 text-white"
+            >
+              <FaGoogle />
+
+            </Button>
+            <Button
+              auto
+              shadow
+              isIconOnly
+              onClick={() => handleSocialLogin('twitter')}
+              className="rounded-full button-text bg-white h-16 w-16 text-xl bg-opacity-20 text-white"
+            >
+              <FaTwitter />
+            </Button>
+          </div>
+
+          <div className="text-center mt-10 mb-6 text-white">
+            <span>Or</span>
           </div>
 
           <Input
             clearable
             bordered
             fullWidth
-            size="lg"
+            size="md"
             label="email"
             contentLeft={<i className="fas fa-envelope" />}
             value={username}
@@ -88,7 +132,7 @@ function Login() {
             clearable
             bordered
             fullWidth
-            size="lg"
+            size="md"
             label="password"
             contentLeft={<i className="fas fa-lock" />}
             value={password}
