@@ -175,10 +175,11 @@ export default function DiveDetails({ id }) {
 
   const renderMediaItem = (media) => {
     const thumbnail = media.thumbnails && media.thumbnails.length > 0 ? media.thumbnails[0] : media.raw_url;
+    
     return (
-      <div className="flex flex-col overflow-hidden rounded-lg shadow-md">
+      <div className="relative group">
         <div 
-          className="relative aspect-w-16 aspect-h-9 cursor-pointer overflow-hidden"
+          className="aspect-w-16 aspect-h-9 cursor-pointer overflow-hidden rounded-lg shadow-md"
           onClick={() => handleMediaClick(media)}
         >
           <img 
@@ -186,34 +187,36 @@ export default function DiveDetails({ id }) {
             alt={media.filename}
             className="w-full h-full object-cover object-center"
           />
-        </div>
-        <div className="bg-gray-100 px-4 py-2 flex justify-between items-center">
-          <Checkbox
-            isSelected={selectedItems.includes(media.id)}
-            onChange={() => handleSelectItem(media.id)}
-            className="p-0"
-          />
-          <button
+          
+          {/* Favorite icon - only shown if item is favorited */}
+          {media.is_favorite && (
+            <div className="absolute bottom-2 left-2 w-4 h-4">
+              <FaStar className="text-white w-full h-full" />
+            </div>
+          )}
+          
+          {/* Selection checkbox - shown on hover */}
+
+          <div
+            className={`absolute top-2 left-2 w-4 h-4 z-10 ${selectedItems.includes(media.id)? '': 'opacity-0 group-hover:opacity-100 transition-opacity'}`}
             onClick={(e) => {
               e.stopPropagation();
-              handleToggleFavorite(media.id);
+              handleSelectItem(media.id);
             }}
-            className="text-yellow-500 hover:text-yellow-600 transition-colors"
-          >
-            <FaStar className={`text-2xl ${media.is_favorite ? 'text-yellow-500' : 'text-gray-300'}`} />
-          </button>
-          {media.mime_type.startsWith('video/') && (
-            <button 
-              onClick={(e) => {
-                e.stopPropagation();
-                handleMediaClick(media);
-              }}
-              className="text-gray-600 hover:text-gray-800 transition-colors"
             >
-              <FaPlay className="text-xl" />
-            </button>
-          )}
+              <FaCheckCircle 
+                className={`h-full w-full ${selectedItems.includes(media.id)? 'text-white': 'text-zinc-300'}`}
+              />
+          </div>
+
         </div>
+        
+        {/* File type indicator for videos */}
+        {media.mime_type.startsWith('video/') && (
+          <div className="absolute bottom-2 right-2 h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity">
+            <FaPlay className="text-white h-full w-full" />
+          </div>
+        )}
       </div>
     );
   };
@@ -304,12 +307,29 @@ export default function DiveDetails({ id }) {
           
             {activeMediaItem && (
               <div className="mb-4 relative max-h-800" key={activeMediaKey}>
-                <button 
-                  onClick={() => setActiveMediaItem(null)}
-                  className="absolute top-2 right-2 text-white bg-black bg-opacity-50 rounded-full p-2 z-10"
-                >
-                  <FaTimes />
-                </button>
+
+                <div className='absolute flex z-10 gap-4 p-2 right-0 top-0'>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleToggleFavorite(activeMediaItem.id);
+                    }}
+                    className="bg-black bg-opacity-50 rounded-full text-2xl p-1"
+                  >
+                    <FaStar className={ 
+                      dive.media_items.filter(item => item.is_favorite).map(item => item.id).includes(activeMediaItem.id) ? 'text-white' : 'text-zinc-300'} 
+                    />
+                  </button>
+          
+                  <button 
+                    onClick={() => setActiveMediaItem(null)}
+                    className="text-white bg-black bg-opacity-50 rounded-full text-2xl p-1"
+                  >
+                    <FaTimes className='h-full w-full' />
+                  </button>
+                  
+                </div>
+                
                 <div className="aspect-w-16 aspect-h-9" style={{maxHeight: '800px'}}>
                   {renderActiveMedia()}
                 </div>
