@@ -190,7 +190,7 @@ export default function DiveDetails({ id }) {
           
           {/* Favorite icon - only shown if item is favorited */}
           {media.is_favorite && (
-            <div className="absolute bottom-2 left-2 w-4 h-4">
+            <div className="absolute bottom-2 left-2 w-5 h-5">
               <FaStar className="text-white w-full h-full" />
             </div>
           )}
@@ -198,7 +198,7 @@ export default function DiveDetails({ id }) {
           {/* Selection checkbox - shown on hover */}
 
           <div
-            className={`absolute top-2 left-2 w-4 h-4 z-10 ${selectedItems.includes(media.id)? '': 'opacity-0 group-hover:opacity-100 transition-opacity'}`}
+            className={`absolute top-2 left-2 w-5 h-5 z-10 ${selectedItems.includes(media.id)? '': 'opacity-0 group-hover:opacity-100 transition-opacity'}`}
             onClick={(e) => {
               e.stopPropagation();
               handleSelectItem(media.id);
@@ -213,7 +213,7 @@ export default function DiveDetails({ id }) {
         
         {/* File type indicator for videos */}
         {media.mime_type.startsWith('video/') && (
-          <div className="absolute bottom-2 right-2 h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity">
+          <div className="absolute bottom-2 right-2 h-5 w-5 opacity-0 group-hover:opacity-100 transition-opacity">
             <FaPlay className="text-white h-full w-full" />
           </div>
         )}
@@ -245,7 +245,7 @@ export default function DiveDetails({ id }) {
   };
 
   if (sessionLoading || !dive) {
-    return <div>Loading...</div>;
+    return null;
   }
 
   return (
@@ -365,7 +365,7 @@ export default function DiveDetails({ id }) {
               </div>
             )}
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-3 mb-4">
               {dive.media_items.filter(media => media.state === 'ready').map((media, index) => (
                 <div key={index}>
                   {renderMediaItem(media)}

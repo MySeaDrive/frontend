@@ -35,7 +35,7 @@ export default function TopNavbar() {
   };
 
   if (sessionLoading) {
-    return <div>Loading...</div>;
+    return null;
   }
 
   if (!session) {

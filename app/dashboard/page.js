@@ -27,7 +27,7 @@ export default function Dashboard() {
   }, [session]);
 
   if (sessionLoading) {
-    return <div>Loading...</div>;
+    return null;
   }
 
   if (!session) {

@@ -72,3 +72,17 @@ body {
 .slide-out {
   animation: slideOut 0.5s ease forwards;
 }
+
+.floating-input {
+  animation: float 3s ease-in-out infinite;
+}
+
+.floating-input:nth-of-type(2) {
+  animation-delay: 0.5s;
+}
+
+@keyframes float {
+  0% { transform: translate(0, 0px); }
+  50% { transform: translate(0, 15px); }
+  100% { transform: translate(0, -0px); }
+}

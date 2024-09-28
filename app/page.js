@@ -32,7 +32,7 @@ const LandingPage = () => {
     <div className="relative">
       
       {/* Content Overlay */}
-      <div className="relative z-10 min-h-screen bg-black bg-opacity-30 text-white">
+      <div className="relative z-10 min-h-screen bg-black bg-opacity-20 text-white">
         <div className="container mx-auto px-4 py-16">
           {/* Hero Section */}
           <header className="mb-16 w-2/3 md:py-32">
@@ -47,7 +47,7 @@ const LandingPage = () => {
             <p className="md:text-xl mb-8">
               for an entire diving lifetime!
             </p>
-            <Link href="/login" className="bg-blue-500 hover:bg-blue-600 text-white py-4 px-8 rounded-lg text-md transition duration-300 button-text font-bold">
+            <Link href="/login" className="bg-blue-500 hover:bg-blue-600 text-white py-4 px-8 rounded-lg text-md transition duration-300 button-text font-bold floating-input">
               Dive in
             </Link>
           </header>
