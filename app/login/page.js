@@ -78,7 +78,7 @@ function Login() {
             contentLeft={<i className="fas fa-envelope" />}
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            className="mb-4"
+            className="mb-4 floating-input"
             name='email'
             isInvalid={errors.username}
             errorMessage={errors.username ? "Email is required" : ""}
@@ -93,7 +93,7 @@ function Login() {
             contentLeft={<i className="fas fa-lock" />}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="mb-6"
+            className="mb-6 floating-input"
             name='password'
             isInvalid={errors.password}
             errorMessage={errors.password ? "Password is required" : ""}
@@ -104,7 +104,7 @@ function Login() {
             type="submit"
             color="primary"
             isLoading={isLoading}
-            className="w-full font-bold py-6 button-text"
+            className="w-full font-bold py-6 button-text floating-input"
             disabled={isLoading}
           >
             {isLoading ? 'Diving in...' : 'Dive In'}
