@@ -3,7 +3,7 @@
 import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { Input, Card, Button } from "@nextui-org/react";
+import { Input, Card, Button, Tooltip } from "@nextui-org/react";
 import toast from 'react-hot-toast';
 import useLoadingStore from '../store/loadingStore';
 import Image from 'next/image';
@@ -86,7 +86,7 @@ function Login() {
           </div>
 
 
-          <div className="flex items-center justify-center space-x-4 mb-6">
+          <div className="flex items-center justify-center space-x-10 mb-6">
             
             <Button
               auto
@@ -98,15 +98,19 @@ function Login() {
               <FaGoogle />
 
             </Button>
-            <Button
-              auto
-              shadow
-              isIconOnly
-              onClick={() => handleSocialLogin('twitter')}
-              className="rounded-full button-text bg-white h-16 w-16 text-xl bg-opacity-20 text-white"
-            >
-              <FaTwitter />
-            </Button>
+
+            <Tooltip content="Coming soon" placement="bottom">
+              <Button
+                auto
+                shadow
+                isIconOnly
+                disabled={true}
+                // onClick={() => handleSocialLogin('twitter')}
+                className="rounded-full button-text bg-white h-16 w-16 text-xl bg-opacity-20 text-white"
+              >
+                <FaTwitter />
+              </Button>
+            </Tooltip>
           </div>
 
           <div className="text-center mt-10 mb-6 text-white">
@@ -126,6 +130,7 @@ function Login() {
             name='email'
             isInvalid={errors.username}
             errorMessage={errors.username ? "Email is required" : ""}
+            disabled={isLoading}
           />
           <Input
             type='password'
@@ -141,6 +146,7 @@ function Login() {
             name='password'
             isInvalid={errors.password}
             errorMessage={errors.password ? "Password is required" : ""}
+            disabled={isLoading}
           />
           <Button
             auto
