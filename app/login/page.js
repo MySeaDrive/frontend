@@ -3,11 +3,14 @@
 import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { Input, Card, Button, Tooltip } from "@nextui-org/react";
+import { Input, Card, Button, Tooltip } from "@heroui/react";
 import toast from 'react-hot-toast';
 import useLoadingStore from '../store/loadingStore';
 import Image from 'next/image';
 import { FaGoogle, FaTwitter } from 'react-icons/fa';
+// import FaGoogle from 'react-icons/fa/faGoogle'
+// import FaTwitter from 'react-icons/fa/faTwitter'
+
 
 function Login() {
   const [username, setUsername] = useState('');
@@ -82,7 +85,7 @@ function Login() {
             <h2 className="text-3xl font-semibold text-center text-white">
             login to 
             </h2>
-            <Image src="/logo_for_dark.webp" width="300" height="100"/>
+            <Image src="/logo_for_dark.webp" width="300" height="100" alt="logo"/>
           </div>
 
 

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useSession } from '../hooks/useSession';
 import { fetchWithAuth } from '../utils/api';
-import { Button } from '@nextui-org/react';
+import { Button } from '@heroui/react';
 
 export default function Dashboard() {
   const [dives, setDives] = useState([]);

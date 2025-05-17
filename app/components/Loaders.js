@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react';
-import { Spinner } from '@nextui-org/react';
+import { Spinner } from '@heroui/react';
 import useLoadingStore from '../store/loadingStore';
 
 const SpinnerLoader = () => {

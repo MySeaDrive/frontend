@@ -7,7 +7,15 @@ import { fetchWithAuth } from '@/app/utils/api';
 import { useSession } from '@/app/hooks/useSession';
 import { useRouter } from 'next/navigation';
 import { FaPlay, FaEdit, FaTrash, FaTimes, FaCheckCircle, FaTimesCircle, FaExchangeAlt, FaStar } from 'react-icons/fa';
-import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, Checkbox } from "@nextui-org/react";
+// import FaPlay from 'react-icons/fa/faPlay'
+// import FaEdit from 'react-icons/fa/faEdit'
+// import FaTrash from 'react-icons/fa/faTrash'
+// import FaTimes from 'react-icons/fa/faTimes'
+// import FaCheckCircle from 'react-icons/fa/faCheckCircle'
+// import FaTimesCircle from 'react-icons/fa/faTimesCircle'
+// import FaExchangeAlt from 'react-icons/fa/faExchangeAlt'
+// import FaStar from 'react-icons/fa/faStar'
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, Checkbox } from "@heroui/react";
 import toast from 'react-hot-toast';
 import ProcessingSection from './ProcessingSection';
 import Log from './Log';

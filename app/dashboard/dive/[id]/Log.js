@@ -1,11 +1,14 @@
 'use client'
 
 import React, { useState, useEffect } from 'react';
-import { Card, Button, Input, Textarea, Switch } from "@nextui-org/react";
+import { Card, Button, Input, Textarea, Switch } from "@heroui/react";
 import { FaEdit, FaSave, FaTimes } from 'react-icons/fa';
+// import FaEdit from 'react-icons/fa/faEdit'
+// import FaSave from 'react-icons/fa/faSave'
+// import FaTimes from 'react-icons/fa/faTimes'
 import { fetchWithAuth } from '@/app/utils/api';
 import toast from 'react-hot-toast';
-import {TimeInput} from "@nextui-org/react";
+import {TimeInput} from "@heroui/react";
 import {Time} from "@internationalized/date";
 
 const Log = ({ diveId, diveDate }) => {

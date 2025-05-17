@@ -1,6 +1,6 @@
 "use client"
 
-import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Input, Button, User, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@nextui-org/react";
+import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Input, Button, User, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@heroui/react";
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useSession } from '@/app/hooks/useSession';
@@ -53,7 +53,7 @@ export default function TopNavbar() {
 
       <NavbarContent className="hidden sm:flex" justify="start">
         <a href="/dashboard">
-          <Image src="/logo.webp" width="40" height="100"/>
+          <Image src="/logo.webp" width="40" height="100" alt="logo"/>
         </a>
         <NavbarItem className="w-full max-w-[600px]">
           <Input
@@ -91,7 +91,7 @@ export default function TopNavbar() {
             </DropdownTrigger>
           </NavbarItem>
           <DropdownMenu aria-label="Profile Actions" variant="flat">
-            <DropdownItem key="email" className="h-14 gap-2" isReadOnly>
+            <DropdownItem key="email" className="h-14 gap-2">
               <p className="font-semibold">signed in as</p>
               <p className="font-semibold">{session.user.email}</p>
             </DropdownItem>

@@ -36,7 +36,7 @@ const LandingPage = () => {
         <div className="container mx-auto px-4 py-16">
           {/* Hero Section */}
           <header className="mb-16 w-2/3 md:py-32">
-            <Image src="/logo_for_dark.webp" width="300" height="200"/>
+            <Image src="/logo_for_dark.webp" width="300" height="200" alt="logo"/>
             <h2 className="text-4xl md:text-6xl mt-8 mb-6 leading-tight font-semibold">
               the place to{' '}
               <span className={`text-yellow-200 inline-block w-48 ${slide}`}>
