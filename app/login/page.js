@@ -1,7 +1,4 @@
-` tags. I will pay close attention to indentation, structure, and completeness.
 
-```
-<replit_final_file>
 'use client';
 
 import { useState, useEffect, Suspense } from 'react';
@@ -64,6 +61,15 @@ function Login() {
 
   return (
     <div className="relative flex flex-col items-center justify-center min-h-screen overflow-hidden">
+      <video
+        autoPlay
+        loop
+        muted
+        className="absolute z-0 w-full h-full object-cover"
+      >
+        <source src="/bg_video_compressed.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
 
       <Card className="w-3/4 max-w-md z-10 p-8 bg-white bg-opacity-10 backdrop-blur-md">
         <div className='flex flex-col mt-8 mb-16 items-center justify-center'>
@@ -89,18 +95,8 @@ function Login() {
 
 export default function LoginWrapper() {
   return (
-    <Suspense>
-      <video
-        autoPlay
-        loop
-        muted
-        className="absolute z-0 w-full h-full object-cover"
-      >
-        <source src="/bg_video_compressed.mp4" type="video/mp4" />
-        Your browser does not support the video tag.
-      </video>
-
+    <Suspense fallback={<div>Loading...</div>}>
       <Login />
     </Suspense>
-  )
+  );
 }

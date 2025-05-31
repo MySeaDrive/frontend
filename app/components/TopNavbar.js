@@ -4,14 +4,12 @@ import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Input, Button, User, Dr
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useSession } from '@/app/hooks/useSession';
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { fetchWithAuth } from '@/app/utils/api';
 import { useState } from 'react';
 import toast from "react-hot-toast";
 
 export default function TopNavbar() {
   const router = useRouter();
-  const supabase = createClientComponentClient();
   const { session, loading: sessionLoading } = useSession();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -29,9 +27,9 @@ export default function TopNavbar() {
     }
   };
 
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
-    router.push('/login/');
+  const handleLogout = () => {
+    // For Replit Auth, we just redirect to login and let the session check handle it
+    router.push('/login');
   };
 
   if (sessionLoading) {
