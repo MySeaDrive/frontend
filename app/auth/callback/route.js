@@ -1,16 +1,8 @@
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
-import { cookies } from 'next/headers';
-import { NextResponse } from 'next/server';
 
+// This file is no longer needed with Replit Auth
+// Replit Auth handles the callback automatically
 export async function GET(request) {
-  const requestUrl = new URL(request.url);
-  const code = requestUrl.searchParams.get('code');
-
-  if (code) {
-    const cookieStore = await cookies();
-    const supabase = createRouteHandlerClient({ cookies: () => cookieStore });
-    await supabase.auth.exchangeCodeForSession(code);
-  }
-
-  return NextResponse.redirect(requestUrl.origin + '/dashboard');
+  // This route can be removed or kept empty
+  // Replit Auth doesn't require a custom callback
+  return new Response('Not needed with Replit Auth', { status: 200 });
 }

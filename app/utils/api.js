@@ -1,4 +1,4 @@
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+
 import useLoadingStore from '../store/loadingStore';
 
 export async function fetchWithAuth(url, options = {}) {
@@ -6,15 +6,22 @@ export async function fetchWithAuth(url, options = {}) {
   setIsLoading(true);
 
   try {
-    const supabase = createClientComponentClient();
-    const { data: { session } } = await supabase.auth.getSession();
+    // Check if user is authenticated with Replit
+    const userResponse = await fetch('/__replauthuser');
     
-    if (!session) {
+    if (!userResponse.ok) {
+      throw new Error('No active session');
+    }
+
+    const user = await userResponse.json();
+    
+    if (!user || !user.id) {
       throw new Error('No active session');
     }
 
     const headers = {
-      'Authorization': `Bearer ${session.access_token}`,
+      'X-Replit-User-Id': user.id,
+      'X-Replit-User-Name': user.name,
       'Content-Type': 'application/json',
       ...options.headers,
     };
