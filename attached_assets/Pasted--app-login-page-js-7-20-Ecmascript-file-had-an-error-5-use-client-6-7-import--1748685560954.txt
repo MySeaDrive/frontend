@@ -1,0 +1,164 @@
+ ⨯ ./app/login/page.js:7:20
+Ecmascript file had an error
+   5 | 'use client';
+   6 |
+>  7 | import { useState, useEffect, Suspense } from 'react';
+     |                    ^^^^^^^^^
+   8 | import { useRouter } from 'next/navigation';
+   9 | import { Card, Button } from "@heroui/react";
+  10 | import toast from 'react-hot-toast';
+
+You're importing a component that needs `useEffect`. This React hook only works in a client component. To fix, mark the file (or its parent) with the `"use client"` directive.
+
+ Learn more: https://nextjs.org/docs/app/api-reference/directives/use-client
+
+
+
+
+
+./app/login/page.js:8:10
+Ecmascript file had an error
+   6 |
+   7 | import { useState, useEffect, Suspense } from 'react';
+>  8 | import { useRouter } from 'next/navigation';
+     |          ^^^^^^^^^
+   9 | import { Card, Button } from "@heroui/react";
+  10 | import toast from 'react-hot-toast';
+  11 | import useLoadingStore from '../store/loadingStore';
+
+You're importing a component that needs `useRouter`. This React hook only works in a client component. To fix, mark the file (or its parent) with the `"use client"` directive.
+
+ Learn more: https://nextjs.org/docs/app/api-reference/directives/use-client
+
+
+
+
+
+./app/login/page.js:7:10
+Ecmascript file had an error
+   5 | 'use client';
+   6 |
+>  7 | import { useState, useEffect, Suspense } from 'react';
+     |          ^^^^^^^^
+   8 | import { useRouter } from 'next/navigation';
+   9 | import { Card, Button } from "@heroui/react";
+  10 | import toast from 'react-hot-toast';
+
+You're importing a component that needs `useState`. This React hook only works in a client component. To fix, mark the file (or its parent) with the `"use client"` directive.
+
+ Learn more: https://nextjs.org/docs/app/api-reference/directives/use-client
+
+
+
+
+ ○ Compiling /_error ...
+ ✓ Compiled /_error in 1362ms
+ GET /login 500 in 12459ms
+ ⨯ ./app/login/page.js:7:20
+Ecmascript file had an error
+   5 | 'use client';
+   6 |
+>  7 | import { useState, useEffect, Suspense } from 'react';
+     |                    ^^^^^^^^^
+   8 | import { useRouter } from 'next/navigation';
+   9 | import { Card, Button } from "@heroui/react";
+  10 | import toast from 'react-hot-toast';
+
+You're importing a component that needs `useEffect`. This React hook only works in a client component. To fix, mark the file (or its parent) with the `"use client"` directive.
+
+ Learn more: https://nextjs.org/docs/app/api-reference/directives/use-client
+
+
+
+
+
+./app/login/page.js:8:10
+Ecmascript file had an error
+   6 |
+   7 | import { useState, useEffect, Suspense } from 'react';
+>  8 | import { useRouter } from 'next/navigation';
+     |          ^^^^^^^^^
+   9 | import { Card, Button } from "@heroui/react";
+  10 | import toast from 'react-hot-toast';
+  11 | import useLoadingStore from '../store/loadingStore';
+
+You're importing a component that needs `useRouter`. This React hook only works in a client component. To fix, mark the file (or its parent) with the `"use client"` directive.
+
+ Learn more: https://nextjs.org/docs/app/api-reference/directives/use-client
+
+
+
+
+
+./app/login/page.js:7:10
+Ecmascript file had an error
+   5 | 'use client';
+   6 |
+>  7 | import { useState, useEffect, Suspense } from 'react';
+     |          ^^^^^^^^
+   8 | import { useRouter } from 'next/navigation';
+   9 | import { Card, Button } from "@heroui/react";
+  10 | import toast from 'react-hot-toast';
+
+You're importing a component that needs `useState`. This React hook only works in a client component. To fix, mark the file (or its parent) with the `"use client"` directive.
+
+ Learn more: https://nextjs.org/docs/app/api-reference/directives/use-client
+
+
+
+
+ GET /login 500 in 36ms
+ ⨯ ./app/login/page.js:7:20
+Ecmascript file had an error
+   5 | 'use client';
+   6 |
+>  7 | import { useState, useEffect, Suspense } from 'react';
+     |                    ^^^^^^^^^
+   8 | import { useRouter } from 'next/navigation';
+   9 | import { Card, Button } from "@heroui/react";
+  10 | import toast from 'react-hot-toast';
+
+You're importing a component that needs `useEffect`. This React hook only works in a client component. To fix, mark the file (or its parent) with the `"use client"` directive.
+
+ Learn more: https://nextjs.org/docs/app/api-reference/directives/use-client
+
+
+
+
+
+./app/login/page.js:8:10
+Ecmascript file had an error
+   6 |
+   7 | import { useState, useEffect, Suspense } from 'react';
+>  8 | import { useRouter } from 'next/navigation';
+     |          ^^^^^^^^^
+   9 | import { Card, Button } from "@heroui/react";
+  10 | import toast from 'react-hot-toast';
+  11 | import useLoadingStore from '../store/loadingStore';
+
+You're importing a component that needs `useRouter`. This React hook only works in a client component. To fix, mark the file (or its parent) with the `"use client"` directive.
+
+ Learn more: https://nextjs.org/docs/app/api-reference/directives/use-client
+
+
+
+
+
+./app/login/page.js:7:10
+Ecmascript file had an error
+   5 | 'use client';
+   6 |
+>  7 | import { useState, useEffect, Suspense } from 'react';
+     |          ^^^^^^^^
+   8 | import { useRouter } from 'next/navigation';
+   9 | import { Card, Button } from "@heroui/react";
+  10 | import toast from 'react-hot-toast';
+
+You're importing a component that needs `useState`. This React hook only works in a client component. To fix, mark the file (or its parent) with the `"use client"` directive.
+
+ Learn more: https://nextjs.org/docs/app/api-reference/directives/use-client
+
+
+
+
+ GET /login 500 in 37ms
