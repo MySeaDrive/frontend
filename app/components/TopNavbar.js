@@ -1,11 +1,23 @@
-"use client"
+"use client";
 
-import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Input, Button, User, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@heroui/react";
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import { useSession } from '@/app/hooks/useSession';
-import { fetchWithAuth } from '@/app/utils/api';
-import { useState } from 'react';
+import {
+  Navbar,
+  NavbarBrand,
+  NavbarContent,
+  NavbarItem,
+  Input,
+  Button,
+  User,
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownItem,
+} from "@heroui/react";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useSession } from "@/app/hooks/useSession";
+import { fetchWithAuth } from "@/app/utils/api";
+import { useState } from "react";
 import toast from "react-hot-toast";
 
 export default function TopNavbar() {
@@ -15,21 +27,21 @@ export default function TopNavbar() {
 
   const handleAddNewDive = async () => {
     try {
-      const newDive = await fetchWithAuth('/dives/save', {
-        method: 'POST',
-        body: { name: 'Untitled Dive' }
+      const newDive = await fetchWithAuth("/dives/save", {
+        method: "POST",
+        body: { name: "Untitled Dive" },
       });
       router.push(`/dashboard/dive/${newDive.id}`);
-      toast.success('New dive added!')
+      toast.success("New dive added!");
     } catch (error) {
-      console.error('Error creating new dive:', error);
+      console.error("Error creating new dive:", error);
       // Handle error (e.g., show error message to user)
     }
   };
 
   const handleLogout = () => {
     // For Replit Auth, we just redirect to login and let the session check handle it
-    router.push('/login');
+    router.push("/");
   };
 
   if (sessionLoading) {
@@ -41,17 +53,16 @@ export default function TopNavbar() {
   }
 
   return (
-    <Navbar 
-      isBordered 
-      maxWidth='2xl' 
+    <Navbar
+      isBordered
+      maxWidth="2xl"
       className="bg-blue-200 bg-opacity-70 backdrop-blur-sm"
       isMenuOpen={isMenuOpen}
       onMenuOpenChange={setIsMenuOpen}
     >
-
       <NavbarContent className="hidden sm:flex" justify="start">
         <a href="/dashboard">
-          <Image src="/logo.webp" width="40" height="100" alt="logo"/>
+          <Image src="/logo.webp" width="40" height="100" alt="logo" />
         </a>
         <NavbarItem className="w-full max-w-[600px]">
           <Input
@@ -59,7 +70,8 @@ export default function TopNavbar() {
               base: "w-full h-10",
               mainWrapper: "h-full",
               input: "text-small",
-              inputWrapper: "h-full font-normal text-default-500 bg-white dark:bg-default-500/20",
+              inputWrapper:
+                "h-full font-normal text-default-500 bg-white dark:bg-default-500/20",
             }}
             placeholder="find a dive by name or location"
             size="sm"
@@ -67,11 +79,14 @@ export default function TopNavbar() {
           />
         </NavbarItem>
       </NavbarContent>
-      
-      
+
       <NavbarContent justify="end">
         <NavbarItem className="hidden sm:flex">
-          <Button className="bg-blue-500 text-white shadow text-xs button-text" variant="solid" onClick={handleAddNewDive}>
+          <Button
+            className="bg-blue-500 text-white shadow text-xs button-text"
+            variant="solid"
+            onClick={handleAddNewDive}
+          >
             Add a new dive
           </Button>
         </NavbarItem>
@@ -91,13 +106,19 @@ export default function TopNavbar() {
           <DropdownMenu aria-label="Profile Actions" variant="flat">
             <DropdownItem key="email" className="h-14 gap-2">
               <p className="font-semibold">signed in as</p>
-              <p className="font-semibold">{session.user.email}</p>
+              {/* <p className="font-semibold">{session.user.email}</p> */}
             </DropdownItem>
-            <DropdownItem key="add_dive" className="sm:hidden" onClick={handleAddNewDive}>
+            <DropdownItem
+              key="add_dive"
+              className="sm:hidden"
+              onClick={handleAddNewDive}
+            >
               Add a new dive
             </DropdownItem>
             <DropdownItem key="account">Account</DropdownItem>
-            <DropdownItem key="logout" color="danger" onClick={handleLogout}>Logout</DropdownItem>
+            <DropdownItem key="logout" color="danger" onClick={handleLogout}>
+              Logout
+            </DropdownItem>
           </DropdownMenu>
         </Dropdown>
       </NavbarContent>
